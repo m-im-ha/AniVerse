@@ -1,14 +1,10 @@
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes/Route";
+
 function App() {
   return (
     <div>
-      <h1 className="text-4xl text-red-700 text-center">a10</h1>
-      <button className="btn">Button</button>
-      <button className="btn btn-neutral">Neutral</button>
-      <button className="btn btn-primary">Primary</button>
-      <button className="btn btn-secondary">Secondary</button>
-      <button className="btn btn-accent">Accent</button>
-      <button className="btn btn-ghost">Ghost</button>
-      <button className="btn btn-link">Link</button>
+      <RouterProvider router={router}/>
     </div>
   );
 }
