@@ -1,21 +1,51 @@
 import { FaGoogle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useContext } from "react";
+import { MovieContext } from "../provider/Movieprovider";
 
 function Login() {
-  const {
-    register,
-    handleSubmit,
-  } = useForm();
+  const { register, handleSubmit } = useForm();
+  const { loginUser, setUser, signInWithGoogle } = useContext(MovieContext);
 
   function handleLogin(data) {
     // e.preventDefault();
     // console.log(123);
     console.log(data);
+    loginUser(data.email, data.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        setUser(user);
+      })
+      .catch((error) => {
+        console.error(error.message);
+        toast.error(`Invalid email or password.`, {
+          position: "bottom-right",
+          autoClose: 4000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          theme: "light",
+        });
+      });
+  }
+
+  function handleSignInWithGoogle() {
+    signInWithGoogle()
+      .then((result) => {
+        // const user = result.user;
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
   }
 
   return (
     <div className="flex items-center justify-center min-h-screen px-4 py-10 sm:px-6 lg:px-8">
+      <ToastContainer />
       <div className="w-full max-w-md rounded-lg bg-white shadow-lg p-6 sm:p-8">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-blue-800 sm:text-3xl">
@@ -38,7 +68,7 @@ function Login() {
               name="email"
               placeholder="Your email address"
               className="input input-bordered w-full"
-              {...register("email")}  
+              {...register("email")}
             />
           </div>
           {/* Password */}
@@ -85,7 +115,10 @@ function Login() {
         </div>
         {/* Google Login */}
         <div className="form-control mt-4">
-          <button className="flex items-center justify-center gap-2 w-full rounded-lg bg-white border border-gray-300 py-2 text-blue-600 font-semibold shadow-md hover:bg-gray-100 transition">
+          <button
+            onClick={handleSignInWithGoogle}
+            className="flex items-center justify-center gap-2 w-full rounded-lg bg-white border border-gray-300 py-2 text-blue-600 font-semibold shadow-md hover:bg-gray-100 transition"
+          >
             <FaGoogle size={18} />
             Login with Google
           </button>

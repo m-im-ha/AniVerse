@@ -30,20 +30,16 @@ function Navlinks() {
       ) : (
         <NavLink to="login">Login</NavLink>
       )}
-      {user ? (
-            <NavLink to="/userProfile">
-              <img
-                className="h-14 w-14 rounded-full border-2 border-blue-500"
-                src={user.photoURL}
-                title={user.displayName || "User"}
-                alt="User Profile"
-              />
-            </NavLink>
-          ) : (
-            <NavLink to="/userProfile">
-              <FaUserAlt className="h-10 w-10 rounded-full text-blue-800" />
-            </NavLink>
-          )}
+      {user && (
+        <NavLink to="/userProfile">
+          <img
+            className="h-14 w-14 rounded-full border-2 border-blue-500"
+            src={user.photoURL}
+            title={user.displayName || "User"}
+            alt="User Profile"
+          />
+        </NavLink>
+      )}
     </div>
   );
 }
