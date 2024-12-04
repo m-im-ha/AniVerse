@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   onAuthStateChanged,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
@@ -11,11 +12,12 @@ import { createContext, useEffect, useState } from "react";
 import { auth } from "../firebase/firebase.init";
 
 export const MovieContext = createContext();
+const googleProvider = new GoogleAuthProvider();
 
 function Movieprovider({ children }) {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
-  // console.log(`user : `, user);
+  console.log(`user : `, user);
 
   function createUser(email, password) {
     setLoading(true);

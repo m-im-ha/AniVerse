@@ -8,6 +8,7 @@ import Login from "../page/Login";
 import Register from "../page/Register";
 import Deals from "../components/Deals";
 import ErrorPage from "../page/ErrorPage";
+import UserProfile from "../components/UserProfile";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/userProfile",
+        element: <UserProfile/>,
       },
     ],
   },
