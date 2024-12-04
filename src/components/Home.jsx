@@ -1,9 +1,10 @@
+import Banner from "./Banner"
 import Navlinks from "./Navlinks"
 
 function Home() {
     return (
         <div>
-           this is home
+           <Banner/>
         </div>
     )
 }
