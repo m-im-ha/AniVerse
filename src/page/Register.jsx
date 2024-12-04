@@ -1,9 +1,14 @@
+import { useContext } from "react";
 import { FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { MovieContext } from "../provider/Movieprovider";
 
 function Register() {
+  const { createUser,updateUserProfile,signInWithGoogle } = useContext(MovieContext);
+  const navigate = useNavigate();
+
   function handleRegister(e) {
     e.preventDefault();
     const form = new FormData(e.target);
@@ -33,7 +38,32 @@ function Register() {
     }
 
     console.log(name, email, Photo_URL, password);
+
+    createUser(email, password)
+      .then((userCredential) => {
+        console.log("User created:", userCredential.user);
+        return updateUserProfile({ displayName: name, photoURL: Photo_URL });
+      })
+      .then(() => {
+        console.log("Profile updated, navigating...");
+        navigate("/");
+      })
+      .catch((error) => console.error("Error during registration:", error));
   }
+
+  function handleSignInWithGoogle() {
+    signInWithGoogle()
+      .then((result) => {
+        const user = result.user;
+        console.log(`from signInWithGoogle : `, user);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }
+
+
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
@@ -131,7 +161,7 @@ function Register() {
         {/* Google Sign-In */}
         <div className="form-control mt-4">
           <button
-            //   onClick={handleSignInWithGoogle}
+            onClick={handleSignInWithGoogle}
             className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white py-2 font-semibold text-blue-600 shadow-md transition hover:bg-gray-100"
           >
             <FaGoogle size={18} />
