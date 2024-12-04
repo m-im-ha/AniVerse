@@ -7,11 +7,13 @@ import Addmovie from "../page/Addmovie";
 import Login from "../page/Login";
 import Register from "../page/Register";
 import Deals from "../components/Deals";
+import ErrorPage from "../page/ErrorPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Applayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
