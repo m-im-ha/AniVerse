@@ -162,6 +162,7 @@ function Addmovie() {
                 onClick={handleRating}
                 initialValue={rating}
                 size={30}
+                maxRating={10}
               />
             </div>
             <p className="ml-2">your rating : {rating}</p>
