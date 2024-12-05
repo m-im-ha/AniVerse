@@ -23,6 +23,7 @@ export const router = createBrowserRouter([
       {
         path: "/allmovies",
         element: <AllMovies />,
+        
       },
       {
         path: "/deals",
@@ -46,7 +47,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/userProfile",
-        element: <UserProfile/>,
+        element: <UserProfile />,
       },
     ],
   },

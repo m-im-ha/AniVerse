@@ -31,16 +31,25 @@ function Addmovie() {
     { value: "Thriller", label: "Thriller" },
   ];
 
-  function handleAddMovie(e) {
+  async function handleAddMovie(e) {
     e.preventDefault();
     const form = new FormData(e.target);
     const moviePoster = form.get("Photo_URL");
     const title = form.get("title");
-    const genre = selectedOption.map((opt)=>opt.value);
+    const genre = selectedOption.map((opt) => opt.value);
     const duration = form.get("duration");
     const year = selectedYear.value;
     const movieRating = rating;
     const summary = form.get("summary");
+    const movie = {
+      moviePoster,
+      title,
+      genre,
+      duration,
+      year,
+      movieRating,
+      summary,
+    };
     console.log(
       moviePoster,
       title,
@@ -50,6 +59,15 @@ function Addmovie() {
       movieRating,
       summary
     );
+
+    const response = await fetch(`http://localhost:5000/movies`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(movie),
+    });
+    const data = await response.json();
   }
 
   return (
