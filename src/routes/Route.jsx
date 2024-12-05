@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
       {
         path: "/allmovies",
         element: <AllMovies />,
-        
+        loader: () => fetch(`http://localhost:5000/movies`),
       },
       {
         path: "/deals",
