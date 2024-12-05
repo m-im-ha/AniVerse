@@ -33,6 +33,23 @@ function Addmovie() {
 
   function handleAddMovie(e) {
     e.preventDefault();
+    const form = new FormData(e.target);
+    const moviePoster = form.get("Photo_URL");
+    const title = form.get("title");
+    const genre = selectedOption.map((opt)=>opt.value);
+    const duration = form.get("duration");
+    const year = selectedYear.value;
+    const movieRating = rating;
+    const summary = form.get("summary");
+    console.log(
+      moviePoster,
+      title,
+      genre,
+      duration,
+      year,
+      movieRating,
+      summary
+    );
   }
 
   return (
@@ -72,7 +89,7 @@ function Addmovie() {
             </label>
             <input
               type="text"
-              name="name"
+              name="title"
               placeholder="Movie Title"
               className="input input-bordered w-full"
               required
@@ -82,6 +99,7 @@ function Addmovie() {
           <div>
             <p>Select movie genre</p>
             <Select
+              isMulti
               defaultValue={selectedOption}
               onChange={setSelectedOption}
               options={options}
@@ -96,13 +114,13 @@ function Addmovie() {
             </label>
             <input
               type="number"
-              name="Duration"
+              name="duration"
               placeholder="Movie Duration"
               className="input input-bordered w-full"
               required
             />
           </div>
-          {/* Date */}
+          {/* year */}
           <div className="form-control">
             <label className="label">
               <span className="label-text font-medium text-blue-900">Year</span>
@@ -120,15 +138,29 @@ function Addmovie() {
                 Rating
               </span>
             </label>
-            <div className="flex flex-row react-simple-star-rating">
+            <div className="flex flex-row">
               <Rating
-              className="react-simple-star-rating"
+                className="flex"
                 onClick={handleRating}
                 initialValue={rating}
                 size={30}
               />
             </div>
             <p className="ml-2">your rating : {rating}</p>
+          </div>
+          {/* Summary */}
+          <div className="form-control flex items-center">
+            <label className="label mr-2">
+              <span className="label-text font-medium text-blue-900">
+                Description
+              </span>
+            </label>
+
+            <textarea
+              name="summary"
+              placeholder="Description"
+              className="textarea textarea-bordered textarea-lg w-full max-w-xs"
+            ></textarea>
           </div>
           {/* Submit */}
           <div className="form-control mt-6">
