@@ -9,6 +9,7 @@ import Register from "../page/Register";
 import Deals from "../components/Deals";
 import ErrorPage from "../page/ErrorPage";
 import UserProfile from "../components/UserProfile";
+import MovieDetails from "../components/MovieDetails";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +26,12 @@ export const router = createBrowserRouter([
         path: "/allmovies",
         element: <AllMovies />,
         loader: () => fetch(`http://localhost:5000/movies`),
+      },
+      {
+        path: "/movieDetails/:id",
+        element: <MovieDetails />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/movies/${params.id}`),
       },
       {
         path: "/deals",

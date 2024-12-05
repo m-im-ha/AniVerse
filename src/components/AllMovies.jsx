@@ -1,10 +1,16 @@
-import { useLoaderData } from "react-router-dom"
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 function AllMovies() {
-    const allmovies = useLoaderData();
-    // console.log(allmovies);
-    return (
-        <div className="min-h-screen bg-gray-100 py-8">
+  const allmovies = useLoaderData();
+  const navigate = useNavigate();
+  // console.log(allmovies);
+
+  function handleSeeDetails(id) {
+    navigate(`/movieDetails/${id}`);
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-100 py-8">
       <h1 className="text-center text-3xl font-bold text-blue-800 mb-6">
         All Movies
       </h1>
@@ -44,7 +50,10 @@ function AllMovies() {
                 {movie.movieRating}⭐
               </p>
               {/* <p className="text-sm text-gray-600">{movie.summary}</p> */}
-              <button className="mt-auto self-start rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition hover:bg-blue-600">
+              <button
+                onClick={() => handleSeeDetails(movie._id)}
+                className="mt-auto self-start rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition hover:bg-blue-600"
+              >
                 See Details
               </button>
             </div>
@@ -52,7 +61,7 @@ function AllMovies() {
         ))}
       </div>
     </div>
-    )
+  );
 }
 
-export default AllMovies
+export default AllMovies;
