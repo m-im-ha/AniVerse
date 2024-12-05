@@ -17,6 +17,7 @@ const googleProvider = new GoogleAuthProvider();
 function Movieprovider({ children }) {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
+  const [allmovies, setAllmovies] = useState([]);
   console.log(`user : `, user);
 
   function createUser(email, password) {
@@ -66,6 +67,8 @@ function Movieprovider({ children }) {
         updateUserProfile,
         signInWithGoogle,
         passReset,
+        allmovies,
+        setAllmovies,
       }}
     >
       {children}

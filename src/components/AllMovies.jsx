@@ -1,7 +1,11 @@
+import { useContext } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
+import { MovieContext } from "../provider/Movieprovider";
 
 function AllMovies() {
-  const allmovies = useLoaderData();
+    const {allmovies,setAllmovies} = useContext(MovieContext);
+  const movies = useLoaderData();
+  setAllmovies(movies);
   const navigate = useNavigate();
   // console.log(allmovies);
 

@@ -1,10 +1,24 @@
-import { useLoaderData } from "react-router-dom"
+import { useContext } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { MovieContext } from "../provider/Movieprovider";
 
 function MovieDetails() {
-    const movie = useLoaderData();
-    console.log(movie);
-    return (
-        <div className="flex mx-auto max-w-2xl rounded-lg shadow-lg overflow-hidden bg-white">
+  const { allmovies, setAllmovies } = useContext(MovieContext);
+  const movie = useLoaderData();
+  console.log(movie);
+  const navigate = useNavigate();
+
+  async function handleDeleteMovie(id) {
+    const response = await fetch(`http://localhost:5000/movies/${id}`, {
+      method: "DELETE",
+    });
+    const data = response.json();
+    setAllmovies(allmovies.filter((movie)=>movie._id !== id));
+    navigate("/allmovies");
+  }
+
+  return (
+    <div className="flex mx-auto max-w-2xl rounded-lg shadow-lg overflow-hidden bg-white">
       {/* Movie Poster */}
       <img
         src={movie.moviePoster}
@@ -53,7 +67,10 @@ function MovieDetails() {
 
         {/* Action Buttons */}
         <div className="mt-4 flex flex-col gap-4">
-          <button className="w-1/2 bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600">
+          <button
+            onClick={() => handleDeleteMovie(movie._id)}
+            className="w-1/2 bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600"
+          >
             Delete Movie
           </button>
           <button className="w-1/2 bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600">
@@ -62,7 +79,7 @@ function MovieDetails() {
         </div>
       </div>
     </div>
-    )
+  );
 }
 
-export default MovieDetails
+export default MovieDetails;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { Rating } from "react-simple-star-rating";
 
@@ -6,6 +7,7 @@ function Addmovie() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
   const [rating, setRating] = useState(0);
+  const navigate = useNavigate();
 
   function handleRating(newRating) {
     setRating(newRating);
@@ -68,6 +70,7 @@ function Addmovie() {
       body: JSON.stringify(movie),
     });
     const data = await response.json();
+    navigate("/allmovies");
   }
 
   return (
