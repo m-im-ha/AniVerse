@@ -10,6 +10,7 @@ import Deals from "../components/Deals";
 import ErrorPage from "../page/ErrorPage";
 import UserProfile from "../components/UserProfile";
 import MovieDetails from "../components/MovieDetails";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -29,7 +30,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/movieDetails/:id",
-        element: <MovieDetails />,
+        element: (
+          <PrivateRoute>
+            <MovieDetails />
+          </PrivateRoute>
+        ),
         loader: ({ params }) =>
           fetch(`http://localhost:5000/movies/${params.id}`),
       },
@@ -39,7 +44,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/favoritemovies",
-        element: <Favoritemovies />,
+        element: (
+          <PrivateRoute>
+            <Favoritemovies />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/addmovie",
@@ -55,7 +64,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/userProfile",
-        element: <UserProfile />,
+        element: (
+          <PrivateRoute>
+            <UserProfile />
+          </PrivateRoute>
+        ),
       },
     ],
   },
