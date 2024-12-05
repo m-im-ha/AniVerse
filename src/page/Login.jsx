@@ -1,5 +1,5 @@
 import { FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -9,6 +9,8 @@ import { MovieContext } from "../provider/Movieprovider";
 function Login() {
   const { register, handleSubmit } = useForm();
   const { loginUser, setUser, signInWithGoogle } = useContext(MovieContext);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   function handleLogin(data) {
     // e.preventDefault();
@@ -18,6 +20,7 @@ function Login() {
       .then((userCredential) => {
         const user = userCredential.user;
         setUser(user);
+        navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
         console.error(error.message);
@@ -37,6 +40,7 @@ function Login() {
     signInWithGoogle()
       .then((result) => {
         // const user = result.user;
+        navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
         console.error(error.message);

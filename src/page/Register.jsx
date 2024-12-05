@@ -6,7 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { MovieContext } from "../provider/Movieprovider";
 
 function Register() {
-  const { createUser,updateUserProfile,signInWithGoogle } = useContext(MovieContext);
+  const { createUser, updateUserProfile, signInWithGoogle, user, setUser } =
+    useContext(MovieContext);
   const navigate = useNavigate();
 
   function handleRegister(e) {
@@ -46,6 +47,11 @@ function Register() {
       })
       .then(() => {
         console.log("Profile updated, navigating...");
+        setUser({
+          ...user,
+          displayName: name,
+          photoURL: Photo_URL,
+        });
         navigate("/");
       })
       .catch((error) => console.error("Error during registration:", error));
@@ -56,14 +62,13 @@ function Register() {
       .then((result) => {
         const user = result.user;
         console.log(`from signInWithGoogle : `, user);
+        setUser(user);
         navigate("/");
       })
       .catch((error) => {
         console.error(error.message);
       });
   }
-
-
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
