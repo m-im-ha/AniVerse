@@ -22,13 +22,15 @@ function Navlinks() {
       <NavLink to="deals">Deals</NavLink>
       <NavLink to="favoritemovies">My Favorites</NavLink>
       <NavLink to="addmovie">Add Movie</NavLink>
-      <NavLink to="register">Register</NavLink>
       {user ? (
         <Link onClick={handleLogout} to="/">
           LogOut
         </Link>
       ) : (
-        <NavLink to="login">Login</NavLink>
+        <div className="flex gap-10">
+          <NavLink to="register">Register</NavLink>
+          <NavLink to="login">Login</NavLink>
+        </div>
       )}
       {user && (
         <NavLink to="/userProfile">

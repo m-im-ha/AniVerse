@@ -1,4 +1,14 @@
+import { useNavigate } from "react-router-dom";
+
 function Featured({featuresMovieData}) {
+
+  const navigate = useNavigate();
+  // console.log(allmovies);
+
+  function handleSeeDetails(id) {
+    navigate(`/movieDetails/${id}`);
+  }
+
     return (
         <div className="min-h-screen bg-gray-100 py-8">
       <h1 className="text-center text-3xl font-bold text-blue-800 mb-6">
@@ -39,7 +49,7 @@ function Featured({featuresMovieData}) {
                 <span className="font-semibold">Rating:</span>{" "}
                 {movie.movieRating}⭐
               </p>
-              <button className="mt-auto self-start rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition hover:bg-blue-600">
+              <button onClick={() => handleSeeDetails(movie._id)} className="mt-auto self-start rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition hover:bg-blue-600">
                 See Details
               </button>
             </div>
