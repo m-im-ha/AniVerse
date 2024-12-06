@@ -52,7 +52,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/addmovie",
-        element: <Addmovie />,
+        element: (
+          <PrivateRoute>
+            <Addmovie />,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/login",
