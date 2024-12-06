@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { Rating } from "react-simple-star-rating";
@@ -6,8 +6,11 @@ import { validateMovieForm } from "../utils/validateMovieForm";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
+import { MovieContext } from "../provider/Movieprovider";
 
 function Addmovie() {
+  const {user} =useContext(MovieContext);
+  // console.log(`from add movie : `,user);
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
   const [rating, setRating] = useState(0);
@@ -50,6 +53,7 @@ function Addmovie() {
     const summary = form.get("summary");
 
     const movie = {
+      useremail : user.email,
       moviePoster,
       title,
       genre,
@@ -215,7 +219,7 @@ function Addmovie() {
         </form>
       </div>
     </div>
-  );
+  )
 }
 
 export default Addmovie;

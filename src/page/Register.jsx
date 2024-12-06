@@ -17,13 +17,13 @@ function Register() {
     const email = form.get("email");
     const Photo_URL = form.get("Photo_URL");
     const password = form.get("password");
-
+  
     const passValidation =
       /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-
+  
     if (!passValidation.test(password)) {
       toast.error(
-        `Password must be at least 6 characters with a mix of symbols, uppercase,lowercase letters, and numbers.`,
+        `Password must be at least 6 characters with a mix of symbols, uppercase, lowercase letters, and numbers.`,
         {
           position: "bottom-right",
           autoClose: 5000,
@@ -37,25 +37,27 @@ function Register() {
       );
       return;
     }
-
-    console.log(name, email, Photo_URL, password);
-
+  
     createUser(email, password)
       .then((userCredential) => {
         console.log("User created:", userCredential.user);
-        return updateUserProfile({ displayName: name, photoURL: Photo_URL });
+        return updateUserProfile({ displayName: name, photoURL: Photo_URL })
+          .then(() => {
+            console.log("Profile updated on backend.");
+            setUser({
+              ...userCredential.user,
+              displayName: name,
+              photoURL: Photo_URL,
+            });
+          });
       })
       .then(() => {
-        console.log("Profile updated, navigating...");
-        setUser({
-          ...user,
-          displayName: name,
-          photoURL: Photo_URL,
-        });
-        navigate("/");
+        console.log("Context updated, navigating...");
+        navigate("/", { replace: true });
       })
       .catch((error) => console.error("Error during registration:", error));
   }
+  
 
   function handleSignInWithGoogle() {
     signInWithGoogle()

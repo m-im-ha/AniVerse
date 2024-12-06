@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
         path: "/addmovie",
         element: (
           <PrivateRoute>
-            <Addmovie />,
+            <Addmovie />
           </PrivateRoute>
         ),
       },
