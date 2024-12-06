@@ -17,10 +17,10 @@ function Register() {
     const email = form.get("email");
     const Photo_URL = form.get("Photo_URL");
     const password = form.get("password");
-  
+
     const passValidation =
       /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-  
+
     if (!passValidation.test(password)) {
       toast.error(
         `Password must be at least 6 characters with a mix of symbols, uppercase, lowercase letters, and numbers.`,
@@ -37,19 +37,34 @@ function Register() {
       );
       return;
     }
-  
+
     createUser(email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         console.log("User created:", userCredential.user);
-        return updateUserProfile({ displayName: name, photoURL: Photo_URL })
-          .then(() => {
-            console.log("Profile updated on backend.");
-            setUser({
-              ...userCredential.user,
-              displayName: name,
-              photoURL: Photo_URL,
-            });
+        const createdAt = userCredential?.user?.metadata?.creationTime;
+        const newUser = { name, email, createdAt };
+        const response = await fetch(
+          `http://localhost:5000/users`,
+          {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(newUser),
+          }
+        );
+        const data = await response.json();
+        return updateUserProfile({
+          displayName: name,
+          photoURL: Photo_URL,
+        }).then(() => {
+          console.log("Profile updated on backend.");
+          setUser({
+            ...userCredential.user,
+            displayName: name,
+            photoURL: Photo_URL,
           });
+        });
       })
       .then(() => {
         console.log("Context updated, navigating...");
@@ -57,7 +72,6 @@ function Register() {
       })
       .catch((error) => console.error("Error during registration:", error));
   }
-  
 
   function handleSignInWithGoogle() {
     signInWithGoogle()
