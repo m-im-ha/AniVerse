@@ -11,6 +11,7 @@ import ErrorPage from "../page/ErrorPage";
 import UserProfile from "../components/UserProfile";
 import MovieDetails from "../components/MovieDetails";
 import PrivateRoute from "./PrivateRoute";
+import UpdateMovie from "../page/UpdateMovie";
 
 export const router = createBrowserRouter([
   {
@@ -55,6 +56,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <Addmovie />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/updatemovie",
+        element: (
+          <PrivateRoute>
+            <UpdateMovie />
           </PrivateRoute>
         ),
       },

@@ -1,6 +1,7 @@
 export function validateMovieForm({
   moviePoster,
   title,
+  genre,
   duration,
   year,
   movieRating,
@@ -38,6 +39,11 @@ export function validateMovieForm({
   // Validate summary
   if (!summary || summary.trim().length < 10) {
     errors.summary = "Summary must have at least 10 characters.";
+  }
+
+  // Validate genre
+  if (!genre || genre.length === 0) {
+    errors.genre = "At least one genre is required.";
   }
 
   return errors;
