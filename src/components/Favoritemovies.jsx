@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { MovieContext } from "../provider/Movieprovider";
-import { useNavigate } from "react-router-dom";
 
 function Favoritemovies() {
   const { user } = useContext(MovieContext);
@@ -27,13 +26,25 @@ function Favoritemovies() {
     if (user) fetchFavorites();
   }, [user]);
 
-  const navigate = useNavigate();
-  // console.log(allmovies);
-
-  function handleSeeDetails(id) {
-    navigate(`/movieDetails/${id}`);
+  function handleDeleteFavorite(movieId) {
+    fetch(`http://localhost:5000/favorites/${user.userID}/${movieId}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Remove the movie from the local state
+          setFavorites((prevFavorites) =>
+            prevFavorites.filter((movie) => movie._id !== movieId)
+          );
+          console.log("Movie removed from favorites.");
+        } else {
+          console.error("Failed to remove movie from favorites.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error removing favorite:", error);
+      });
   }
-
 
   return (
     <div className="min-h-screen bg-gray-100 py-8">
@@ -75,12 +86,11 @@ function Favoritemovies() {
                 <span className="font-semibold">Rating:</span>{" "}
                 {movie.movieRating}⭐
               </p>
-              {/* <p className="text-sm text-gray-600">{movie.summary}</p> */}
               <button
-                onClick={() => handleSeeDetails(movie._id)}
+                onClick={() => handleDeleteFavorite(movie._id)}
                 className="mt-auto self-start rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition hover:bg-blue-600"
               >
-                See Details
+                Delete Favorite
               </button>
             </div>
           </div>
