@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 import { MovieContext } from "../provider/Movieprovider";
 
 function Addmovie() {
-  const {user} =useContext(MovieContext);
+  const { user } = useContext(MovieContext);
   // console.log(`from add movie : `,user);
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
@@ -53,7 +53,7 @@ function Addmovie() {
     const summary = form.get("summary");
 
     const movie = {
-      useremail : user.email,
+      useremail: user.email,
       moviePoster,
       title,
       genre,
@@ -82,13 +82,16 @@ function Addmovie() {
     }
 
     // Send data to the server
-    const response = await fetch(`http://localhost:5000/movies`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(movie),
-    });
+    const response = await fetch(
+      `https://animated-movieportal-server.vercel.app/movies`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(movie),
+      }
+    );
 
     if (response.ok) {
       Swal.fire({
@@ -116,12 +119,8 @@ function Addmovie() {
       <ToastContainer />
       <div className="w-full max-w-md rounded-lg text-success-content bg-white p-6 shadow-lg sm:p-8">
         <div className="text-center">
-          <h2 className="text-2xl font-bold sm:text-3xl">
-            Add Your Movie
-          </h2>
-          <p className="mt-2">
-            Nice to meet you! Enter your movie details.
-          </p>
+          <h2 className="text-2xl font-bold sm:text-3xl">Add Your Movie</h2>
+          <p className="mt-2">Nice to meet you! Enter your movie details.</p>
         </div>
         <form onSubmit={handleAddMovie} className="mt-6 space-y-4">
           <div className="form-control">
@@ -219,7 +218,7 @@ function Addmovie() {
         </form>
       </div>
     </div>
-  )
+  );
 }
 
 export default Addmovie;

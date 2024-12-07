@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { MovieContext } from "../provider/Movieprovider";
 import { useContext, useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -47,6 +47,9 @@ function Navlinks() {
             </NavLink>
             <NavLink to="/allmovies" className="hover:text-primary-focus text-base-content">
               All Movies
+            </NavLink>
+            <NavLink to="/deals" className="hover:text-primary-focus text-base-content">
+              Deals
             </NavLink>
             <NavLink to="/favoritemovies" className="hover:text-primary-focus text-base-content">
               My Favorites
@@ -122,6 +125,13 @@ function Navlinks() {
               onClick={() => setIsMenuOpen(false)}
             >
               All Movies
+            </NavLink>
+            <NavLink
+              to="/deals"
+              className="hover:text-primary text-base-content"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Deals
             </NavLink>
             <NavLink
               to="/favoritemovies"

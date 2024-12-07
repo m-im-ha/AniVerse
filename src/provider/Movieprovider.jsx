@@ -51,12 +51,14 @@ function Movieprovider({ children }) {
       if (currentUser) {
         // User is logged in
         const email = currentUser.email;
-  
+
         try {
           // Fetch user data from the backend
-          const response = await fetch(`http://localhost:5000/users?email=${email}`);
+          const response = await fetch(
+            `https://animated-movieportal-server.vercel.app/users?email=${email}`
+          );
           const backendUser = await response.json();
-  
+
           // Update the context with both Firebase user data and userID from your backend
           setUser({
             ...currentUser,
@@ -71,10 +73,9 @@ function Movieprovider({ children }) {
       }
       setLoading(false);
     });
-  
+
     return () => unsubscribe();
   }, []);
-  
 
   return (
     <MovieContext.Provider

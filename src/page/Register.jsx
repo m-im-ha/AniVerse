@@ -43,9 +43,9 @@ function Register() {
         console.log("User created:", userCredential.user);
         const createdAt = userCredential?.user?.metadata?.creationTime;
         const favorites = [];
-        const newUser = { name, email, createdAt,favorites };
+        const newUser = { name, email, createdAt, favorites };
         const response = await fetch(
-          `http://localhost:5000/users`,
+          `https://animated-movieportal-server.vercel.app/users`,
           {
             method: "POST",
             headers: {
@@ -65,7 +65,7 @@ function Register() {
             ...userCredential.user,
             displayName: name,
             photoURL: Photo_URL,
-            userID : data.insertedId
+            userID: data.insertedId,
           });
         });
       })

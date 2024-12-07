@@ -83,7 +83,7 @@ function UpdateMovie() {
     // Send updated data to the backend
     try {
       const response = await fetch(
-        `http://localhost:5000/movies/${movie._id}`,
+        `https://animated-movieportal-server.vercel.app/movies/${movie._id}`,
         {
           method: "PATCH",
           headers: {
@@ -102,15 +102,15 @@ function UpdateMovie() {
         navigate("/allmovies");
       } else {
         toast.error("Failed to update the movie", {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
     } catch (error) {
       console.error("Error updating movie:", error);

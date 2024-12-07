@@ -10,7 +10,7 @@ function Favoritemovies() {
     const fetchFavorites = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/favorites/${user.userID}`
+          `https://animated-movieportal-server.vercel.app/favorites/${user.userID}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -27,9 +27,12 @@ function Favoritemovies() {
   }, [user]);
 
   function handleDeleteFavorite(movieId) {
-    fetch(`http://localhost:5000/favorites/${user.userID}/${movieId}`, {
-      method: "DELETE",
-    })
+    fetch(
+      `https://animated-movieportal-server.vercel.app/favorites/${user.userID}/${movieId}`,
+      {
+        method: "DELETE",
+      }
+    )
       .then((response) => {
         if (response.ok) {
           // Remove the movie from the local state

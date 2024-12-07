@@ -22,12 +22,14 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
-        loader: () => fetch(`http://localhost:5000/features`),
+        loader: () =>
+          fetch(`https://animated-movieportal-server.vercel.app/features`),
       },
       {
         path: "/allmovies",
         element: <AllMovies />,
-        loader: () => fetch(`http://localhost:5000/movies`),
+        loader: () =>
+          fetch(`https://animated-movieportal-server.vercel.app/movies`),
       },
       {
         path: "/movieDetails/:id",
@@ -37,7 +39,9 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/movies/${params.id}`),
+          fetch(
+            `https://animated-movieportal-server.vercel.app/movies/${params.id}`
+          ),
       },
       {
         path: "/deals",

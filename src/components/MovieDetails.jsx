@@ -10,9 +10,12 @@ function MovieDetails() {
   const navigate = useNavigate();
 
   async function handleDeleteMovie(id) {
-    const response = await fetch(`http://localhost:5000/movies/${id}`, {
-      method: "DELETE",
-    });
+    const response = await fetch(
+      `https://animated-movieportal-server.vercel.app/movies/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
     const data = response.json();
     setAllmovies(allmovies.filter((movie) => movie._id !== id));
     navigate("/allmovies");
@@ -23,7 +26,7 @@ function MovieDetails() {
       //   console.log("User ID:", user?._id);
       // console.log("Movie ID:", movie._id);
       const response = await fetch(
-        `http://localhost:5000/favorites/${user.userID}`,
+        `https://animated-movieportal-server.vercel.app/favorites/${user.userID}`,
         {
           method: "POST",
           headers: {
@@ -46,7 +49,6 @@ function MovieDetails() {
   function handleUpdateMovie() {
     navigate("/updatemovie", { state: { movie } });
   }
-  
 
   return (
     <div className="flex mx-auto max-w-2xl rounded-lg shadow-lg overflow-hidden bg-white">

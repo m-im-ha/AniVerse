@@ -23,16 +23,16 @@ function Login() {
       .then(async (userCredential) => {
         const user = userCredential.user;
         const response = await fetch(
-          `http://localhost:5000/users?email=${email}`
+          `https://animated-movieportal-server.vercel.app/users?email=${email}`
         );
         const backendUser = await response.json();
-        console.log(backendUser)
+        console.log(backendUser);
         setUser((prevUser) => ({
           ...prevUser,
           userID: backendUser._id,
         }));
-        
-        console.log(`updated user : `,user);
+
+        console.log(`updated user : `, user);
         navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
