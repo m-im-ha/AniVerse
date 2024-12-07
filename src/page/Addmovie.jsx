@@ -114,12 +114,12 @@ function Addmovie() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
       <ToastContainer />
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg sm:p-8">
+      <div className="w-full max-w-md rounded-lg text-success-content bg-white p-6 shadow-lg sm:p-8">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-blue-800 sm:text-3xl">
+          <h2 className="text-2xl font-bold sm:text-3xl">
             Add Your Movie
           </h2>
-          <p className="mt-2 text-gray-600">
+          <p className="mt-2">
             Nice to meet you! Enter your movie details.
           </p>
         </div>

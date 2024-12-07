@@ -1,6 +1,6 @@
 function Deals() {
     return (
-        <div>
+        <div className="text-base-content text-2xl">
             deals
         </div>
     )

@@ -10,7 +10,7 @@ function Featured({featuresMovieData}) {
   }
 
     return (
-        <div className="min-h-screen bg-gray-100 py-8">
+        <div className="min-h-screen py-8">
       <h1 className="text-center text-3xl font-bold text-blue-800 mb-6">
         Feature Movies
       </h1>
