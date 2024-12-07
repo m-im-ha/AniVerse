@@ -1,7 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { MovieContext } from "../provider/Movieprovider";
 import { useContext } from "react";
-import { FaUserAlt } from "react-icons/fa";
 
 function Navlinks() {
   const { user, setUser, logOut } = useContext(MovieContext);
@@ -16,7 +15,7 @@ function Navlinks() {
 
   return (
     <div className="flex justify-around bg-pink-200">
-      <NavLink to="/">Logo</NavLink>
+      <NavLink to="/">AniVerse</NavLink>
       <NavLink to="/">Home</NavLink>
       <NavLink to="allmovies">All Movies</NavLink>
       <NavLink to="deals">Deals</NavLink>
