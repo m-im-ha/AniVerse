@@ -47,12 +47,34 @@ function Movieprovider({ children }) {
   }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        // User is logged in
+        const email = currentUser.email;
+  
+        try {
+          // Fetch user data from the backend
+          const response = await fetch(`http://localhost:5000/users?email=${email}`);
+          const backendUser = await response.json();
+  
+          // Update the context with both Firebase user data and userID from your backend
+          setUser({
+            ...currentUser,
+            userID: backendUser._id,
+          });
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        // User is not logged in
+        setUser(null);
+      }
       setLoading(false);
     });
+  
     return () => unsubscribe();
   }, []);
+  
 
   return (
     <MovieContext.Provider
