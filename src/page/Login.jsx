@@ -8,18 +8,31 @@ import { MovieContext } from "../provider/Movieprovider";
 
 function Login() {
   const { register, handleSubmit } = useForm();
-  const { loginUser, setUser, signInWithGoogle } = useContext(MovieContext);
+  const { user, loginUser, setUser, signInWithGoogle } =
+    useContext(MovieContext);
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(user);
 
   function handleLogin(data) {
+    const email = data.email;
     // e.preventDefault();
     // console.log(123);
-    console.log(data);
-    loginUser(data.email, data.password)
-      .then((userCredential) => {
+    // console.log(data);
+    loginUser(email, data.password)
+      .then(async (userCredential) => {
         const user = userCredential.user;
-        setUser(user);
+        const response = await fetch(
+          `http://localhost:5000/users?email=${email}`
+        );
+        const backendUser = await response.json();
+        console.log(backendUser)
+        setUser((prevUser) => ({
+          ...prevUser,
+          userID: backendUser._id,
+        }));
+        
+        console.log(`updated user : `,user);
         navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {

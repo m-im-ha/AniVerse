@@ -42,7 +42,8 @@ function Register() {
       .then(async (userCredential) => {
         console.log("User created:", userCredential.user);
         const createdAt = userCredential?.user?.metadata?.creationTime;
-        const newUser = { name, email, createdAt };
+        const favorites = [];
+        const newUser = { name, email, createdAt,favorites };
         const response = await fetch(
           `http://localhost:5000/users`,
           {
@@ -54,6 +55,7 @@ function Register() {
           }
         );
         const data = await response.json();
+        // console.log(data);
         return updateUserProfile({
           displayName: name,
           photoURL: Photo_URL,
@@ -63,6 +65,7 @@ function Register() {
             ...userCredential.user,
             displayName: name,
             photoURL: Photo_URL,
+            userID : data.insertedId
           });
         });
       })

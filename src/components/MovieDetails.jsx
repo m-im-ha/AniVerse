@@ -3,7 +3,9 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { MovieContext } from "../provider/Movieprovider";
 
 function MovieDetails() {
-  const { allmovies, setAllmovies } = useContext(MovieContext);
+  
+  const { user,allmovies, setAllmovies } = useContext(MovieContext);
+  console.log(`user : `,user);
   const movie = useLoaderData();
   console.log(movie);
   const navigate = useNavigate();
@@ -16,6 +18,28 @@ function MovieDetails() {
     setAllmovies(allmovies.filter((movie)=>movie._id !== id));
     navigate("/allmovies");
   }
+
+  const addToFavorites = async () => {
+    try {
+    //   console.log("User ID:", user?._id);
+    // console.log("Movie ID:", movie._id);
+      const response = await fetch(`http://localhost:5000/favorites/${user.userID}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ movieId: movie._id }),
+      });
+      if (response.ok) {
+        console.log("Added to favorites!");
+      } else {
+    console.log("Failed to add to favorites.");
+      }
+    } catch (error) {
+      console.error("Error adding to favorites:", error);
+  console.log("An error occurred.");
+    }
+  };
 
   return (
     <div className="flex mx-auto max-w-2xl rounded-lg shadow-lg overflow-hidden bg-white">
@@ -73,7 +97,7 @@ function MovieDetails() {
           >
             Delete Movie
           </button>
-          <button className="w-1/2 bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600">
+          <button onClick={addToFavorites} className="w-1/2 bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600">
             Add to Favorite
           </button>
         </div>

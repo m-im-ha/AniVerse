@@ -18,7 +18,7 @@ function Movieprovider({ children }) {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
   const [allmovies, setAllmovies] = useState([]);
-  console.log(`user : `, user);
+  console.log(`user from provider: `, user);
 
   function createUser(email, password) {
     setLoading(true);
