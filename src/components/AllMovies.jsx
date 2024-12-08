@@ -1,24 +1,44 @@
 import { useContext, useState, useEffect } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MovieContext } from "../provider/Movieprovider";
 import { FaSearch } from "react-icons/fa";
 
 function AllMovies() {
-  const { allmovies, setAllmovies } = useContext(MovieContext);
-  const movies = useLoaderData();
-  const [searchQuery, setSearchQuery] = useState("");
+  const { setAllmovies } = useContext(MovieContext); 
+  const [movies, setMovies] = useState([]); 
+  const [filteredMovies, setFilteredMovies] = useState([]); 
+  const [searchQuery, setSearchQuery] = useState(""); 
   const navigate = useNavigate();
 
+  // Fetch movies from the backend
   useEffect(() => {
-    if (allmovies.length === 0) {
-      setAllmovies(movies);
+    async function fetchMovies() {
+      try {
+        const response = await fetch(
+          "https://animated-movieportal-server.vercel.app/movies"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setMovies(data); 
+          setFilteredMovies(data); 
+          setAllmovies(data);
+        } else {
+          console.error("Failed to fetch movies");
+        }
+      } catch (error) {
+        console.error("Error fetching movies:", error);
+      }
     }
-  }, [allmovies, movies, setAllmovies]);
+    fetchMovies();
+  }, [setAllmovies]);
 
   // Filter movies based on search query
-  const filteredMovies = allmovies.filter((movie) =>
-    movie.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  useEffect(() => {
+    const filtered = movies.filter((movie) =>
+      movie?.title?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredMovies(filtered);
+  }, [movies, searchQuery]);
 
   function handleSeeDetails(id) {
     navigate(`/movieDetails/${id}`);
@@ -109,20 +129,6 @@ function AllMovies() {
                     active:scale-95 focus:outline-none focus:ring-4 focus:ring-purple-500/50 flex items-center justify-center"
                   >
                     See Details
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      className="w-5 h-5 ml-2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13 7l5 5m0 0l-5 5m5-5H6"
-                      />
-                    </svg>
                   </button>
                 </div>
               </div>

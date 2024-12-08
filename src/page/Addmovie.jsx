@@ -8,9 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import { MovieContext } from "../provider/Movieprovider";
 
-function Addmovie() {
-  const { user } = useContext(MovieContext);
-  // console.log(`from add movie : `,user);
+function AddMovie() {
+  const { user, allmovies, setAllmovies } = useContext(MovieContext);
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
   const [rating, setRating] = useState(0);
@@ -51,7 +50,7 @@ function Addmovie() {
     const year = selectedYear ? selectedYear.value : null;
     const movieRating = rating;
     const summary = form.get("summary");
-
+  
     const movie = {
       useremail: user.email,
       moviePoster,
@@ -62,7 +61,7 @@ function Addmovie() {
       movieRating,
       summary,
     };
-
+  
     // Validate the form
     const validationErrors = validateMovieForm(movie);
     if (Object.keys(validationErrors).length > 0) {
@@ -80,28 +79,45 @@ function Addmovie() {
       });
       return;
     }
-
-    // Send data to the server
-    const response = await fetch(
-      `https://animated-movieportal-server.vercel.app/movies`,
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(movie),
+  
+    try {
+      // Send data to the server
+      const response = await fetch(
+        `https://animated-movieportal-server.vercel.app/movies`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(movie),
+        }
+      );
+  
+      if (response.ok) {
+        const newMovie = await response.json(); 
+        setAllmovies((prevMovies) => [...prevMovies, newMovie]); 
+  
+        Swal.fire({
+          title: "Movie added successfully!!",
+          icon: "success",
+          confirmButtonColor: "Ok",
+        });
+  
+        navigate("/allmovies");
+      } else {
+        toast.error("Failed to add movie", {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
-    );
-
-    if (response.ok) {
-      Swal.fire({
-        title: "Movie added successfully!!",
-        icon: "success",
-        confirmButtonColor: "Ok",
-      });
-      navigate("/allmovies");
-    } else {
-      toast.error(error, {
+    } catch (error) {
+      toast.error("An error occurred while adding the movie.", {
         position: "bottom-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -113,6 +129,7 @@ function Addmovie() {
       });
     }
   }
+  
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900">
@@ -141,7 +158,6 @@ function Addmovie() {
               required
             />
           </div>
-
           <div className="form-control">
             <label className="label">
               <span className="label-text font-medium text-gray-300">
@@ -156,7 +172,6 @@ function Addmovie() {
               required
             />
           </div>
-
           <div>
             <label className="label">
               <span className="label-text font-medium text-gray-300">
@@ -171,7 +186,6 @@ function Addmovie() {
               className="basic-multi-select text-gray-800"
             />
           </div>
-
           <div className="form-control">
             <label className="label">
               <span className="label-text font-medium text-gray-300">
@@ -186,7 +200,6 @@ function Addmovie() {
               required
             />
           </div>
-
           <div className="form-control">
             <label className="label">
               <span className="label-text font-medium text-gray-300">Year</span>
@@ -198,7 +211,6 @@ function Addmovie() {
               className="text-gray-800"
             />
           </div>
-
           <div className="form-control">
             <label className="label">
               <span className="label-text font-medium text-gray-300">
@@ -214,10 +226,8 @@ function Addmovie() {
                 fillColor="gold"
                 emptyColor="gray"
               />
-              {/* <p className="text-gray-300">Your rating: {rating / 10}</p> */}
             </div>
           </div>
-
           <div className="form-control">
             <label className="label">
               <span className="label-text font-medium text-gray-300">
@@ -232,7 +242,6 @@ function Addmovie() {
               required
             ></textarea>
           </div>
-
           <div className="form-control mt-6">
             <button
               type="submit"
@@ -247,4 +256,4 @@ function Addmovie() {
   );
 }
 
-export default Addmovie;
+export default AddMovie;
