@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { MovieContext } from "../provider/Movieprovider";
+import Swal from "sweetalert2";
 
 function Favoritemovies() {
   const { user } = useContext(MovieContext);
@@ -27,26 +28,38 @@ function Favoritemovies() {
   }, [user]);
 
   function handleDeleteFavorite(movieId) {
-    fetch(
-      `https://animated-movieportal-server.vercel.app/favorites/${user.userID}/${movieId}`,
-      {
-        method: "DELETE",
-      }
-    )
-      .then((response) => {
-        if (response.ok) {
-          // Remove the movie from the local state
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(
+            `https://animated-movieportal-server.vercel.app/favorites/${user.userID}/${movieId}`,
+            {
+              method: "DELETE",
+            }
+          );
+          const data = await response.json();
           setFavorites((prevFavorites) =>
             prevFavorites.filter((movie) => movie._id !== movieId)
           );
-          console.log("Movie removed from favorites.");
-        } else {
-          console.error("Failed to remove movie from favorites.");
+
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your movie has been deleted.",
+            icon: "success",
+          });
+        } catch (error) {
+          console.error("Error deleting movie:", error);
         }
-      })
-      .catch((error) => {
-        console.error("Error removing favorite:", error);
-      });
+      }
+    });
   }
 
   return (
