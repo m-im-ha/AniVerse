@@ -1,14 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { MovieContext } from "../provider/Movieprovider";
 import Swal from "sweetalert2";
+import Loading from "../ui/Loading";
 
 function Favoritemovies() {
-  const { user } = useContext(MovieContext);
+  const { user, loading, setLoading } = useContext(MovieContext);
   const [favorites, setFavorites] = useState([]);
   console.log(favorites);
 
   useEffect(() => {
     const fetchFavorites = async () => {
+      setLoading(true);
       try {
         const response = await fetch(
           `https://animated-movieportal-server.vercel.app/favorites/${user.userID}`
@@ -21,11 +23,13 @@ function Favoritemovies() {
         }
       } catch (error) {
         console.error("Error fetching favorites:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     if (user) fetchFavorites();
-  }, [user]);
+  }, [user, setLoading]);
 
   function handleDeleteFavorite(movieId) {
     Swal.fire({
@@ -39,6 +43,7 @@ function Favoritemovies() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
+          setLoading(true);
           const response = await fetch(
             `https://animated-movieportal-server.vercel.app/favorites/${user.userID}/${movieId}`,
             {
@@ -57,10 +62,14 @@ function Favoritemovies() {
           });
         } catch (error) {
           console.error("Error deleting movie:", error);
+        } finally {
+          setLoading(false);
         }
       }
     });
   }
+
+  if (loading) return <Loading />;
 
   return (
     <div className="min-h-screen py-8">
