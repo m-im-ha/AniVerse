@@ -60,6 +60,12 @@ function MovieDetails() {
         }
       );
       if (response.ok) {
+        Swal.fire({
+          title: "Movie added to your favorites!!",
+          icon: "success",
+          confirmButtonColor: "Ok",
+        });
+        navigate("/allmovies");
         console.log("Added to favorites!");
       } else {
         console.log("Failed to add to favorites.");
