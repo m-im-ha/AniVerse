@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { MovieContext } from "../provider/Movieprovider";
+import Swal from "sweetalert2";
 
 function MovieDetails() {
   const { user, allmovies, setAllmovies } = useContext(MovieContext);
@@ -10,16 +11,39 @@ function MovieDetails() {
   const navigate = useNavigate();
 
   async function handleDeleteMovie(id) {
-    const response = await fetch(
-      `https://animated-movieportal-server.vercel.app/movies/${id}`,
-      {
-        method: "DELETE",
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await fetch(
+            `https://animated-movieportal-server.vercel.app/movies/${id}`,
+            {
+              method: "DELETE",
+            }
+          );
+          const data = await response.json();
+          setAllmovies(allmovies.filter((movie) => movie._id !== id));
+  
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your movie has been deleted.",
+            icon: "success",
+          });
+          navigate("/allmovies");
+        } catch (error) {
+          console.error("Error deleting movie:", error);
+        }
       }
-    );
-    const data = response.json();
-    setAllmovies(allmovies.filter((movie) => movie._id !== id));
-    navigate("/allmovies");
+    });
   }
+  
 
   const handleAddToFavorites = async () => {
     try {
