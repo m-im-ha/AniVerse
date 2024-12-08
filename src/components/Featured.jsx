@@ -10,8 +10,8 @@ function Featured({ featuresMovieData }) {
   return (
     <div className="bg-base py-16 px-4">
       <div className="container mx-auto">
-        <h1 className="text-center text-4xl font-bold text-gray-800 mb-12">
-          Featured <span className="text-blue-600">Movies</span>
+        <h1 className="text-center text-4xl font-bold text-orange-700 mb-12">
+          Featured <span className="text-blue-500">Movies</span>
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-screen-lg mx-auto">

@@ -111,7 +111,7 @@ function MediaShowcase() {
 
             {/* Third Image (Spider-Man) */}
             <div
-              className="absolute top-80 left-16 md:top-72 md:left-0 transition-all duration-500 
+              className="absolute top-80 left-16 md:top-72 md:left-60 transition-all duration-500 
               hover:z-30 hover:scale-110 hover:rotate-2 
               shadow-2xl hover:shadow-purple-500/50 
               transform hover:-translate-x-3 hover:translate-y-3"
