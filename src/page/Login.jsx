@@ -3,13 +3,14 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MovieContext } from "../provider/Movieprovider";
 
 function Login() {
   const { register, handleSubmit } = useForm();
   const { user, loginUser, setUser, signInWithGoogle } =
     useContext(MovieContext);
+  const [emailForForgetPass, setEmailForForgetPass] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   console.log(user);
@@ -103,7 +104,11 @@ function Login() {
               {...register("password")}
             />
             <label className="label">
-              <Link className="text-blue-500 hover:underline label-text-alt">
+              <Link
+                state={{ email: emailForForgetPass }}
+                to="/forgetpass"
+                className="text-blue-500 hover:underline label-text-alt"
+              >
                 Forgot password?
               </Link>
             </label>

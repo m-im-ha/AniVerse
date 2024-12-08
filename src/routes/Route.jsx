@@ -12,6 +12,7 @@ import UserProfile from "../components/UserProfile";
 import MovieDetails from "../components/MovieDetails";
 import PrivateRoute from "./PrivateRoute";
 import UpdateMovie from "../page/UpdateMovie";
+import ForgetPass from "../page/ForgetPass";
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +75,10 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/forgetpass",
+        element: <ForgetPass />,
       },
       {
         path: "/register",

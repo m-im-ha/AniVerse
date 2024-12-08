@@ -48,6 +48,7 @@ function Movieprovider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setLoading(true);
       if (currentUser) {
         // User is logged in
         const email = currentUser.email;
@@ -66,6 +67,7 @@ function Movieprovider({ children }) {
           });
         } catch (error) {
           console.error("Error fetching user data:", error);
+          setUser(null);
         }
       } else {
         // User is not logged in
