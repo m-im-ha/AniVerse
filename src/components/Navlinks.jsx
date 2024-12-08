@@ -57,25 +57,46 @@ function Navlinks() {
             </div>
 
             <nav className="hidden lg:flex items-center gap-8">
-              {["Home", "All Movies", "Deals", "My Favorites", "Add Movie"].map(
-                (text, index) => {
-                  const link =
-                    text === "Home"
-                      ? "/"
-                      : `/${text.toLowerCase().replace(" ", "")}`;
-                  return (
-                    <NavLink
-                      key={index}
-                      to={link}
-                      className="text-white relative group hover:text-yellow-400"
-                      onClick={() => handleNavigation(link)}
-                    >
-                      {text}
-                      <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
-                    </NavLink>
-                  );
-                }
-              )}
+              <NavLink
+                to="/"
+                className="text-white relative group hover:text-yellow-400"
+                onClick={() => handleNavigation("/")}
+              >
+                Home
+                <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
+              </NavLink>
+              <NavLink
+                to="/allmovies"
+                className="text-white relative group hover:text-yellow-400"
+                onClick={() => handleNavigation("/allmovies")}
+              >
+                All Movies
+                <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
+              </NavLink>
+              <NavLink
+                to="/deals"
+                className="text-white relative group hover:text-yellow-400"
+                onClick={() => handleNavigation("/deals")}
+              >
+                Deals
+                <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
+              </NavLink>
+              <NavLink
+                to="/favoritemovies"
+                className="text-white relative group hover:text-yellow-400"
+                onClick={() => handleNavigation("/favoritemovies")}
+              >
+                Favorite Movies
+                <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
+              </NavLink>
+              <NavLink
+                to="/addmovie"
+                className="text-white relative group hover:text-yellow-400"
+                onClick={() => handleNavigation("/addmovie")}
+              >
+                Add Movie
+                <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
+              </NavLink>
               {user ? (
                 <>
                   <button
@@ -134,28 +155,61 @@ function Navlinks() {
 
           {isMenuOpen && (
             <nav className="lg:hidden flex flex-col items-start gap-6 pb-6 border-t border-gray-700">
-              {["Home", "All Movies", "Deals", "My Favorites", "Add Movie"].map(
-                (text, index) => {
-                  const link =
-                    text === "Home"
-                      ? "/"
-                      : `/${text.toLowerCase().replace(" ", "")}`;
-                  return (
-                    <NavLink
-                      key={index}
-                      to={link}
-                      className="text-white relative group hover:text-yellow-400"
-                      onClick={() => {
-                        handleNavigation(link);
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      {text}
-                      <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
-                    </NavLink>
-                  );
-                }
-              )}
+              <NavLink
+                to="/"
+                className="text-white relative group hover:text-yellow-400"
+                onClick={() => {
+                  handleNavigation("/");
+                  setIsMenuOpen(false);
+                }}
+              >
+                Home
+                <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
+              </NavLink>
+              <NavLink
+                to="/allmovies"
+                className="text-white relative group hover:text-yellow-400"
+                onClick={() => {
+                  handleNavigation("/allmovies");
+                  setIsMenuOpen(false);
+                }}
+              >
+                All Movies
+                <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
+              </NavLink>
+              <NavLink
+                to="/deals"
+                className="text-white relative group hover:text-yellow-400"
+                onClick={() => {
+                  handleNavigation("/deals");
+                  setIsMenuOpen(false);
+                }}
+              >
+                Deals
+                <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
+              </NavLink>
+              <NavLink
+                to="/favoritemovies"
+                className="text-white relative group hover:text-yellow-400"
+                onClick={() => {
+                  handleNavigation("/favoritemovies");
+                  setIsMenuOpen(false);
+                }}
+              >
+                Favorite Movies
+                <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
+              </NavLink>
+              <NavLink
+                to="/addmovie"
+                className="text-white relative group hover:text-yellow-400"
+                onClick={() => {
+                  handleNavigation("/addmovie");
+                  setIsMenuOpen(false);
+                }}
+              >
+                Add Movie
+                <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
+              </NavLink>
               {user ? (
                 <div className="flex items-center gap-4">
                   <button

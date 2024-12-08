@@ -72,48 +72,62 @@ function Favoritemovies() {
   if (loading) return <Loading />;
 
   return (
-    <div className="min-h-screen py-8">
-      <h1 className="text-center text-3xl font-bold text-blue-800 mb-6">
+    <div className="min-h-screen bg-base py-10 px-4">
+      <h1 className="text-center text-4xl font-extrabold text-blue-900 mb-10 tracking-tight">
         My Favorite Movies
       </h1>
-      {/* 3-Column Grid for Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+      {/* Movie card */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {favorites.map((movie) => (
           <div
             key={movie._id}
-            className="bg-white rounded-lg shadow-lg p-4 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center"
+            className="group relative overflow-hidden rounded-lg shadow-md 
+              transform transition-all duration-300 hover:shadow-xl hover:-translate-y-2 
+              bg-white border border-gray-200"
           >
             {/* Movie Poster */}
-            <div>
+            <div className="relative pt-[120%] overflow-hidden">
               <img
                 src={movie.moviePoster}
                 alt={movie.title}
-                className="w-full h-60 object-cover rounded-lg bg-gray-200"
+                className="absolute inset-0 w-full h-full object-cover 
+                  transition-transform duration-300 group-hover:scale-105"
               />
+              {/* Overlay */}
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent 
+                opacity-0 group-hover:opacity-100 transition-opacity duration-300 
+                flex items-end p-4"
+              >
+                <div className="text-white">
+                  <h3 className="text-lg font-semibold">{movie.title}</h3>
+                  <p className="text-sm text-white/80">
+                    {movie.genre.join(", ")}
+                  </p>
+                </div>
+              </div>
             </div>
+
             {/* Movie Details */}
-            <div className="flex flex-col">
-              <h2 className="text-lg font-bold text-gray-800 mb-2">
-                {movie.title}
-              </h2>
-              <p className="text-sm text-gray-600 mb-2">
-                <span className="font-semibold">Genre:</span>{" "}
-                {movie.genre.join(", ")}
-              </p>
-              <p className="text-sm text-gray-600 mb-2">
-                <span className="font-semibold">Year:</span> {movie.year}
-              </p>
-              <p className="text-sm text-gray-600 mb-2">
-                <span className="font-semibold">Duration:</span>{" "}
-                {movie.duration} mins
-              </p>
-              <p className="text-sm text-gray-600 mb-2">
-                <span className="font-semibold">Rating:</span>{" "}
-                {movie.movieRating}⭐
-              </p>
+            <div className="p-4 space-y-2">
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-medium text-gray-800 truncate">
+                  {movie.title}
+                </h2>
+                <div className="flex items-center bg-yellow-300 text-gray-900 px-2 py-1 rounded-md text-sm font-medium">
+                  <span className="text-yellow-700 text-xl mr-1">★</span>
+                  {movie.movieRating}
+                </div>
+              </div>
+
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>{movie.year}</span>
+                <span>{movie.duration} mins</span>
+              </div>
+
               <button
                 onClick={() => handleDeleteFavorite(movie._id)}
-                className="mt-auto self-start rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white transition hover:bg-blue-600"
+                className="w-full mt-4 bg-gradient-to-r from-red-500 to-red-600 text-white py-2 rounded-lg font-semibold transition hover:from-red-600 hover:to-red-700 hover:shadow-lg focus:ring-4 focus:ring-red-300 active:scale-95"
               >
                 Delete Favorite
               </button>
