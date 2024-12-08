@@ -18,7 +18,7 @@ function Movieprovider({ children }) {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
   const [allmovies, setAllmovies] = useState([]);
-  console.log(`user from provider: `, user);
+  // console.log(`user from provider: `, user);
 
   function createUser(email, password) {
     setLoading(true);
@@ -60,7 +60,7 @@ function Movieprovider({ children }) {
           );
           const backendUser = await response.json();
 
-          // Update the context with both Firebase user data and userID from your backend
+          // Update the context with both Firebase user data and userID from backend
           setUser({
             ...currentUser,
             userID: backendUser._id,

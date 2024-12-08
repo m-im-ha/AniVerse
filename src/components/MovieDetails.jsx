@@ -7,9 +7,9 @@ import SeeAllButton from "./SeeAllButton";
 
 function MovieDetails() {
   const { user, allmovies, setAllmovies } = useContext(MovieContext);
-  console.log(`user : `, user);
+  // console.log(`user : `, user);
   const movie = useLoaderData();
-  console.log(movie);
+  // console.log(movie);
   const navigate = useNavigate();
 
   async function handleDeleteMovie(id) {
@@ -68,13 +68,13 @@ function MovieDetails() {
           confirmButtonColor: "Ok",
         });
         navigate("/allmovies");
-        console.log("Added to favorites!");
+        // console.log("Added to favorites!");
       } else {
-        console.log("Failed to add to favorites.");
+        // console.log("Failed to add to favorites.");
       }
     } catch (error) {
       console.error("Error adding to favorites:", error);
-      console.log("An error occurred.");
+      // console.log("An error occurred.");
     }
   };
 

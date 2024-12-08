@@ -6,7 +6,7 @@ import Loading from "../ui/Loading";
 function Favoritemovies() {
   const { user, loading, setLoading } = useContext(MovieContext);
   const [favorites, setFavorites] = useState([]);
-  console.log(favorites);
+  // console.log(favorites);
 
   useEffect(() => {
     const fetchFavorites = async () => {

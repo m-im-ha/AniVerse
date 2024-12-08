@@ -8,30 +8,37 @@ import { MovieContext } from "../provider/Movieprovider";
 
 function Login() {
   const { register, handleSubmit } = useForm();
-  const { user, loginUser, setUser, signInWithGoogle } =
+  const { user, loginUser, setUser, signInWithGoogle,setLoading } =
     useContext(MovieContext);
-  const [emailForForgetPass, setEmailForForgetPass] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
   function handleLogin(data) {
+    setLoading(true); 
     const email = data.email;
+  
     loginUser(email, data.password)
       .then(async (userCredential) => {
         const user = userCredential.user;
+  
+        // Fetch user data from the backend
         const response = await fetch(
           `https://animated-movieportal-server.vercel.app/users?email=${email}`
         );
         const backendUser = await response.json();
-        setUser((prevUser) => ({
-          ...prevUser,
+  
+        setUser({
+          ...user,
           userID: backendUser._id,
-        }));
-
+        });
+  
+        setLoading(false);
         navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
         console.error(error.message);
+
+        setLoading(false);
         toast.error(`Invalid email or password.`, {
           position: "bottom-right",
           autoClose: 4000,
@@ -43,6 +50,7 @@ function Login() {
         });
       });
   }
+  
 
   function handleSignInWithGoogle() {
     signInWithGoogle()
