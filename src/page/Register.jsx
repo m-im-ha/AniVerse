@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaEnvelope, FaLock, FaUser, FaImage } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useContext } from "react";
 import { MovieContext } from "../provider/Movieprovider";
 
 function Register() {
@@ -40,7 +40,6 @@ function Register() {
 
     createUser(email, password)
       .then(async (userCredential) => {
-        console.log("User created:", userCredential.user);
         const createdAt = userCredential?.user?.metadata?.creationTime;
         const favorites = [];
         const newUser = { name, email, createdAt, favorites };
@@ -55,12 +54,10 @@ function Register() {
           }
         );
         const data = await response.json();
-        // console.log(data);
         return updateUserProfile({
           displayName: name,
           photoURL: Photo_URL,
         }).then(() => {
-          console.log("Profile updated on backend.");
           setUser({
             ...userCredential.user,
             displayName: name,
@@ -70,7 +67,6 @@ function Register() {
         });
       })
       .then(() => {
-        console.log("Context updated, navigating...");
         navigate("/", { replace: true });
       })
       .catch((error) => console.error("Error during registration:", error));
@@ -79,9 +75,7 @@ function Register() {
   function handleSignInWithGoogle() {
     signInWithGoogle()
       .then((result) => {
-        const user = result.user;
-        console.log(`from signInWithGoogle : `, user);
-        setUser(user);
+        setUser(result.user);
         navigate("/");
       })
       .catch((error) => {
@@ -90,107 +84,110 @@ function Register() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 flex items-center justify-center px-4 py-10">
       <ToastContainer />
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg sm:p-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-blue-800 sm:text-3xl">
-            Create Your Account
-          </h2>
-          <p className="mt-2 text-gray-600">
-            Nice to meet you! Enter your details to sign up.
-          </p>
-        </div>
-        <form onSubmit={handleRegister} className="mt-6 space-y-4">
-          {/* Name */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium text-blue-900">Name</span>
-            </label>
-            <input
-              type="text"
-              name="name"
-              placeholder="Your full name"
-              className="input input-bordered w-full"
-              required
-            />
+
+      <div className="w-full max-w-md bg-gray-800 rounded-2xl border border-gray-700 shadow-2xl overflow-hidden">
+        <div className="p-8 text-center">
+          <div className="mb-8">
+            <h2 className="text-4xl font-extrabold text-gray-100 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-pink-500 to-red-500">
+              Create Your Account
+            </h2>
+            <p className="text-gray-400 text-sm">
+              Enter your details to start your journey
+            </p>
           </div>
-          {/* Email */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium text-blue-900">
-                Email
-              </span>
-            </label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Your email address"
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-          {/* Photo URL */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium text-blue-900">
-                Photo URL
-              </span>
-            </label>
-            <input
-              type="text"
-              name="Photo_URL"
-              placeholder="Link to your photo"
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-          {/* Password */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium text-blue-900">
-                Password
-              </span>
-            </label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Choose a secure password"
-              className="input input-bordered w-full"
-              required
-            />
-          </div>
-          {/* Submit */}
-          <div className="form-control mt-6">
+
+          <form onSubmit={handleRegister} className="space-y-6">
+            {/* Name Input */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                <FaUser className="text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Full Name"
+                name="name"
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 border border-gray-600 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                required
+              />
+            </div>
+
+            {/* Email Input */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                <FaEnvelope className="text-gray-400" />
+              </div>
+              <input
+                type="email"
+                placeholder="Email Address"
+                name="email"
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 border border-gray-600 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                required
+              />
+            </div>
+
+            {/* Photo URL Input */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                <FaImage className="text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Photo URL"
+                name="Photo_URL"
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 border border-gray-600 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
+              />
+            </div>
+
+            {/* Password Input */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                <FaLock className="text-gray-400" />
+              </div>
+              <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 border border-gray-600 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                required
+              />
+            </div>
+
+            {/* Register Button */}
             <button
               type="submit"
-              className="w-full rounded-lg bg-blue-500 py-2 font-semibold text-white transition hover:bg-blue-600"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-500 to-red-500 text-white font-bold hover:from-pink-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
             >
               Register Now
             </button>
+          </form>
+
+          {/* Divider */}
+          <div className="flex items-center my-6 space-x-4">
+            <div className="flex-grow h-px bg-gray-600"></div>
+            <span className="text-gray-400 text-sm">OR</span>
+            <div className="flex-grow h-px bg-gray-600"></div>
           </div>
-        </form>
-        <p className="mt-4 text-center text-gray-600">
-          Already have an account?{" "}
-          <Link to="/login" className="text-blue-500 hover:underline">
-            Login
-          </Link>
-        </p>
-        {/* Divider */}
-        <div className="mt-6 flex items-center justify-center space-x-2">
-          <div className="h-px w-1/3 bg-gray-300"></div>
-          <p className="text-sm text-gray-500">OR</p>
-          <div className="h-px w-1/3 bg-gray-300"></div>
-        </div>
-        {/* Google Sign-In */}
-        <div className="form-control mt-4">
+
+          {/* Google Sign-In */}
           <button
             onClick={handleSignInWithGoogle}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white py-2 font-semibold text-blue-600 shadow-md transition hover:bg-gray-100"
+            className="w-full py-3 rounded-xl bg-gray-700 border border-gray-600 text-gray-200 flex items-center justify-center hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
-            <FaGoogle size={18} />
-            Sign in with Google
+            <FaGoogle className="mr-3 text-yellow-400" />
+            Continue with Google
           </button>
+
+          {/* Login Link */}
+          <div className="mt-6 text-center">
+            <span className="text-gray-400 text-sm">
+              Already have an account?{" "}
+              <Link to="/login" className="text-pink-400 hover:text-pink-500">
+                Login
+              </Link>
+            </span>
+          </div>
         </div>
       </div>
     </div>
