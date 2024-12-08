@@ -2,6 +2,7 @@ import { useLoaderData } from "react-router-dom"
 import Banner from "./Banner"
 import Featured from "./Featured"
 import SeeAllButton from "./SeeAllButton";
+import MediaShowcase from "./MediaShowcase";
 
 function Home() {
     const featuresMovieData = useLoaderData();
@@ -11,6 +12,7 @@ function Home() {
            <Banner/>
            <Featured featuresMovieData={featuresMovieData}/>
            <SeeAllButton/>
+           <MediaShowcase/>
         </div>
     )
 }
