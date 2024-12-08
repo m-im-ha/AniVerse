@@ -3,11 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { Rating } from "react-simple-star-rating";
 import { validateMovieForm } from "../utils/validateMovieForm";
+import { MovieContext } from "../provider/Movieprovider"; // Import the context
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
+import "react-toastify/dist/ReactToastify.css";
 
 function UpdateMovie() {
+  const { allmovies, setAllmovies } = useContext(MovieContext); // Access context
   const location = useLocation();
   const navigate = useNavigate();
   const { movie } = location.state || {};
@@ -94,11 +96,18 @@ function UpdateMovie() {
       );
 
       if (response.ok) {
+        const updatedMovieData = await response.json();
         Swal.fire({
           title: "Movie updated successfully!",
           icon: "success",
           confirmButtonColor: "Ok",
         });
+
+        const updatedMovies = allmovies.map((m) =>
+          m._id === updatedMovieData._id ? updatedMovieData : m
+        );
+        setAllmovies(updatedMovies);
+
         navigate("/allmovies");
       } else {
         toast.error("Failed to update the movie", {
