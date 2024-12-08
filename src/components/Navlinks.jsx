@@ -43,62 +43,50 @@ function Navlinks() {
   return (
     <>
       {loading && <Loading />}
-      <header className="bg-base-100 shadow-md sticky top-0 z-50">
+      <header className="bg-gradient-to-r from-indigo-900 via-purple-800 to-black shadow-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="text-2xl font-bold text-primary">
-              <NavLink to="/" onClick={() => handleNavigation("/")}>
-                AniVerse
+            <div className="text-3xl font-extrabold text-yellow-400 tracking-wide">
+              <NavLink
+                to="/"
+                onClick={() => handleNavigation("/")}
+                className="hover:text-yellow-300 transition-all"
+              >
+                Ani<span className="text-white">Verse</span>
               </NavLink>
             </div>
 
-            <nav className="hidden lg:flex items-center gap-6">
-              <NavLink
-                to="/"
-                className="hover:text-primary-focus text-base-content"
-                onClick={() => handleNavigation("/")}
-              >
-                Home
-              </NavLink>
-              <NavLink
-                to="/allmovies"
-                className="hover:text-primary-focus text-base-content"
-                onClick={() => handleNavigation("/allmovies")}
-              >
-                All Movies
-              </NavLink>
-              <NavLink
-                to="/deals"
-                className="hover:text-primary-focus text-base-content"
-                onClick={() => handleNavigation("/deals")}
-              >
-                Deals
-              </NavLink>
-              <NavLink
-                to="/favoritemovies"
-                className="hover:text-primary-focus text-base-content"
-                onClick={() => handleNavigation("/favoritemovies")}
-              >
-                My Favorites
-              </NavLink>
-              <NavLink
-                to="/addmovie"
-                className="hover:text-primary-focus text-base-content"
-                onClick={() => handleNavigation("/addmovie")}
-              >
-                Add Movie
-              </NavLink>
+            <nav className="hidden lg:flex items-center gap-8">
+              {["Home", "All Movies", "Deals", "My Favorites", "Add Movie"].map(
+                (text, index) => {
+                  const link =
+                    text === "Home"
+                      ? "/"
+                      : `/${text.toLowerCase().replace(" ", "")}`;
+                  return (
+                    <NavLink
+                      key={index}
+                      to={link}
+                      className="text-white relative group hover:text-yellow-400"
+                      onClick={() => handleNavigation(link)}
+                    >
+                      {text}
+                      <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
+                    </NavLink>
+                  );
+                }
+              )}
               {user ? (
                 <>
                   <button
                     onClick={handleLogout}
-                    className="btn btn-sm btn-outline text-error"
+                    className="btn btn-sm btn-outline border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black"
                   >
                     LogOut
                   </button>
                   <NavLink to="/userProfile">
                     <img
-                      className="h-10 w-10 rounded-full border-2 border-primary"
+                      className="h-10 w-10 rounded-full border-2 border-yellow-400 hover:border-white"
                       src={user.photoURL}
                       title={user.displayName || "User"}
                       alt="User Profile"
@@ -107,10 +95,16 @@ function Navlinks() {
                 </>
               ) : (
                 <div className="flex gap-4">
-                  <NavLink to="/register" className="btn btn-sm btn-primary">
+                  <NavLink
+                    to="/register"
+                    className="btn btn-sm bg-yellow-400 text-black hover:bg-yellow-500"
+                  >
                     Register
                   </NavLink>
-                  <NavLink to="/login" className="btn btn-sm btn-secondary">
+                  <NavLink
+                    to="/login"
+                    className="btn btn-sm bg-purple-500 text-white hover:bg-purple-600"
+                  >
                     Login
                   </NavLink>
                 </div>
@@ -119,11 +113,11 @@ function Navlinks() {
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
-                    className="toggle"
+                    className="toggle toggle-primary"
                     onChange={handleToggleTheme}
                     checked={theme === "dark"}
                   />
-                  <span className="text-sm text-base-content">
+                  <span className="text-sm text-white">
                     {theme === "dark" ? "Dark" : "Light"}
                   </span>
                 </label>
@@ -131,7 +125,7 @@ function Navlinks() {
             </nav>
 
             <button
-              className="lg:hidden text-2xl text-base-content focus:outline-none"
+              className="lg:hidden text-3xl text-yellow-400 focus:outline-none"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <FiX /> : <FiMenu />}
@@ -139,50 +133,34 @@ function Navlinks() {
           </div>
 
           {isMenuOpen && (
-            <nav className="lg:hidden flex flex-col items-start gap-4 pb-4 border-t border-base-300">
-              <NavLink
-                to="/"
-                className="hover:text-primary text-base-content"
-                onClick={() => {
-                  handleNavigation("/");
-                  setIsMenuOpen(false);
-                }}
-              >
-                Home
-              </NavLink>
-              <NavLink
-                to="/allmovies"
-                className="hover:text-primary text-base-content"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                All Movies
-              </NavLink>
-              <NavLink
-                to="/deals"
-                className="hover:text-primary text-base-content"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Deals
-              </NavLink>
-              <NavLink
-                to="/favoritemovies"
-                className="hover:text-primary text-base-content"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                My Favorites
-              </NavLink>
-              <NavLink
-                to="/addmovie"
-                className="hover:text-primary text-base-content"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Add Movie
-              </NavLink>
+            <nav className="lg:hidden flex flex-col items-start gap-6 pb-6 border-t border-gray-700">
+              {["Home", "All Movies", "Deals", "My Favorites", "Add Movie"].map(
+                (text, index) => {
+                  const link =
+                    text === "Home"
+                      ? "/"
+                      : `/${text.toLowerCase().replace(" ", "")}`;
+                  return (
+                    <NavLink
+                      key={index}
+                      to={link}
+                      className="text-white relative group hover:text-yellow-400"
+                      onClick={() => {
+                        handleNavigation(link);
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      {text}
+                      <span className="absolute left-0 bottom-0 w-0 h-[3px] bg-yellow-400 group-hover:w-full transition-all duration-300"></span>
+                    </NavLink>
+                  );
+                }
+              )}
               {user ? (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4">
                   <button
                     onClick={handleLogout}
-                    className="btn btn-sm btn-outline text-error"
+                    className="btn btn-sm btn-outline border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black"
                   >
                     LogOut
                   </button>
@@ -192,12 +170,12 @@ function Navlinks() {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     <img
-                      className="h-8 w-8 rounded-full border-2 border-primary"
+                      className="h-8 w-8 rounded-full border-2 border-yellow-400 hover:border-white"
                       src={user.photoURL}
                       title={user.displayName || "User"}
                       alt="User Profile"
                     />
-                    <span className="text-sm text-base-content">
+                    <span className="text-sm text-white">
                       {user.displayName || "Profile"}
                     </span>
                   </NavLink>
@@ -206,33 +184,20 @@ function Navlinks() {
                 <div className="flex flex-col gap-2 w-full">
                   <NavLink
                     to="/register"
-                    className="btn btn-sm btn-primary"
+                    className="btn btn-sm bg-yellow-400 text-black hover:bg-yellow-500"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Register
                   </NavLink>
                   <NavLink
                     to="/login"
-                    className="btn btn-sm btn-secondary"
+                    className="btn btn-sm bg-purple-500 text-white hover:bg-purple-600"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     Login
                   </NavLink>
                 </div>
               )}
-              <div className="w-full mt-4">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="toggle"
-                    onChange={handleToggleTheme}
-                    checked={theme === "dark"}
-                  />
-                  <span className="text-sm text-base-content">
-                    {theme === "dark" ? "Dark" : "Light"}
-                  </span>
-                </label>
-              </div>
             </nav>
           )}
         </div>
