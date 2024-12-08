@@ -1,4 +1,4 @@
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaEnvelope, FaLock } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
@@ -13,13 +13,9 @@ function Login() {
   const [emailForForgetPass, setEmailForForgetPass] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(user);
 
   function handleLogin(data) {
     const email = data.email;
-    // e.preventDefault();
-    // console.log(123);
-    // console.log(data);
     loginUser(email, data.password)
       .then(async (userCredential) => {
         const user = userCredential.user;
@@ -27,13 +23,11 @@ function Login() {
           `https://animated-movieportal-server.vercel.app/users?email=${email}`
         );
         const backendUser = await response.json();
-        console.log(backendUser);
         setUser((prevUser) => ({
           ...prevUser,
           userID: backendUser._id,
         }));
 
-        console.log(`updated user : `, user);
         navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
@@ -53,7 +47,6 @@ function Login() {
   function handleSignInWithGoogle() {
     signInWithGoogle()
       .then((result) => {
-        // const user = result.user;
         navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
@@ -62,88 +55,92 @@ function Login() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 py-10 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 flex items-center justify-center px-4 py-10">
       <ToastContainer />
-      <div className="w-full max-w-md rounded-lg bg-white shadow-lg p-6 sm:p-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-blue-800 sm:text-3xl">
-            Welcome Back
-          </h2>
-          <p className="mt-2 text-gray-600">
-            Nice to see you again! Enter your details to log in.
-          </p>
-        </div>
-        <form onSubmit={handleSubmit(handleLogin)} className="mt-6 space-y-4">
-          {/* Email */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-blue-900 font-medium">
-                Email
-              </span>
-            </label>
-            <input
-              type="email"
-              name="email"
-              placeholder="Your email address"
-              className="input input-bordered w-full"
-              {...register("email")}
-            />
+
+      <div className="w-full max-w-md bg-gray-800 rounded-2xl border border-gray-700 shadow-2xl overflow-hidden">
+        <div className="p-8 text-center">
+          <div className="mb-8">
+            <h2 className="text-4xl font-extrabold text-gray-100 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 via-pink-500 to-red-500">
+              Welcome Back
+            </h2>
+            <p className="text-gray-400 text-sm">
+              Enter your credentials to access your account
+            </p>
           </div>
-          {/* Password */}
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-blue-900 font-medium">
-                Password
-              </span>
-            </label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Your password"
-              className="input input-bordered w-full"
-              {...register("password")}
-            />
-            <label className="label">
-              <Link
-                state={{ email: emailForForgetPass }}
-                to="/forgetpass"
-                className="text-blue-500 hover:underline label-text-alt"
-              >
-                Forgot password?
-              </Link>
-            </label>
-          </div>
-          {/* Submit Button */}
-          <div className="form-control mt-6">
+
+          <form onSubmit={handleSubmit(handleLogin)} className="space-y-6">
+            {/* Email Input */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                <FaEnvelope className="text-gray-400" />
+              </div>
+              <input
+                type="email"
+                placeholder="Email Address"
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 border border-gray-600 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                {...register("email", { required: true })}
+              />
+            </div>
+
+            {/* Password Input */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex -mt-7 items-center">
+                <FaLock className="text-gray-400" />
+              </div>
+              <input
+                type="password"
+                placeholder="Password"
+                className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-700 border border-gray-600 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400"
+                {...register("password", { required: true })}
+              />
+              <div className="text-right mt-2">
+                <Link
+                  to="/forgetpass"
+                  className="text-pink-400 hover:text-pink-500 text-sm"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
+            </div>
+
+            {/* Login Button */}
             <button
               type="submit"
-              className="w-full rounded-lg bg-blue-500 py-2 text-white font-semibold hover:bg-blue-600 transition"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-500 to-red-500 text-white font-bold hover:from-pink-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
             >
               Login
             </button>
+          </form>
+
+          {/* Divider */}
+          <div className="flex items-center my-6 space-x-4">
+            <div className="flex-grow h-px bg-gray-600"></div>
+            <span className="text-gray-400 text-sm">OR</span>
+            <div className="flex-grow h-px bg-gray-600"></div>
           </div>
-        </form>
-        <p className="mt-4 text-center text-gray-600">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-blue-500 hover:underline">
-            Register
-          </Link>
-        </p>
-        {/* Divider */}
-        <div className="mt-6 flex items-center justify-center space-x-2">
-          <div className="h-px w-1/3 bg-gray-300"></div>
-          <p className="text-sm text-gray-500">OR</p>
-          <div className="h-px w-1/3 bg-gray-300"></div>
-        </div>
-        {/* Google Login */}
-        <div className="form-control mt-4">
+
+          {/* Google Login */}
           <button
             onClick={handleSignInWithGoogle}
-            className="flex items-center justify-center gap-2 w-full rounded-lg bg-white border border-gray-300 py-2 text-blue-600 font-semibold shadow-md hover:bg-gray-100 transition"
+            className="w-full py-3 rounded-xl bg-gray-700 border border-gray-600 text-gray-200 flex items-center justify-center hover:bg-gray-600 transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
-            <FaGoogle size={18} />
-            Login with Google
+            <FaGoogle className="mr-3 text-yellow-400" />
+            Continue with Google
           </button>
+
+          {/* Register Link */}
+          <div className="mt-6 text-center">
+            <span className="text-gray-400 text-sm">
+              Don't have an account?{" "}
+              <Link
+                to="/register"
+                className="text-pink-400 hover:text-pink-500"
+              >
+                Register Now
+              </Link>
+            </span>
+          </div>
         </div>
       </div>
     </div>
