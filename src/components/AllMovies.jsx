@@ -31,7 +31,7 @@ function AllMovies() {
           Movie Collection
         </h1>
 
-        {/* Search Input with Icon */}
+        {/* Search Input */}
         <div className="max-w-md mx-auto mb-12">
           <div className="relative">
             <input

@@ -8,7 +8,6 @@ import Login from "../page/Login";
 import Register from "../page/Register";
 import Deals from "../components/Deals";
 import ErrorPage from "../page/ErrorPage";
-import UserProfile from "../components/UserProfile";
 import MovieDetails from "../components/MovieDetails";
 import PrivateRoute from "./PrivateRoute";
 import UpdateMovie from "../page/UpdateMovie";
@@ -83,14 +82,6 @@ export const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
-      },
-      {
-        path: "/userProfile",
-        element: (
-          <PrivateRoute>
-            <UserProfile />
-          </PrivateRoute>
-        ),
       },
     ],
   },

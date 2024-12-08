@@ -3,13 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { Rating } from "react-simple-star-rating";
 import { validateMovieForm } from "../utils/validateMovieForm";
-import { MovieContext } from "../provider/Movieprovider"; // Import the context
+import { MovieContext } from "../provider/Movieprovider";
 import { ToastContainer, toast } from "react-toastify";
 import Swal from "sweetalert2";
 import "react-toastify/dist/ReactToastify.css";
 
 function UpdateMovie() {
-  const { allmovies, setAllmovies } = useContext(MovieContext); // Access context
+  const { allmovies, setAllmovies } = useContext(MovieContext);
   const location = useLocation();
   const navigate = useNavigate();
   const { movie } = location.state || {};
@@ -24,15 +24,12 @@ function UpdateMovie() {
 
   const handleRating = (newRating) => setRating(newRating);
 
-  const years = Array.from(
-    { length: 30 },
-    (_, i) => new Date().getFullYear() - i
-  );
-  const yearOptions = years.map((year) => ({ value: year, label: year }));
+  const yearOptions = Array.from({ length: 30 }, (_, i) => ({
+    value: new Date().getFullYear() - i,
+    label: new Date().getFullYear() - i,
+  }));
 
-  const handleChange = (selectedOption) => setSelectedYear(selectedOption);
-
-  const options = [
+  const genreOptions = [
     { value: "Action", label: "Action" },
     { value: "Horror", label: "Horror" },
     { value: "Animation", label: "Animation" },
@@ -46,28 +43,19 @@ function UpdateMovie() {
   const handleUpdateMovie = async (e) => {
     e.preventDefault();
     const form = new FormData(e.target);
-    const moviePoster = form.get("Photo_URL");
-    const title = form.get("title");
-    const genre = selectedOption ? selectedOption.map((opt) => opt.value) : [];
-    const duration = form.get("duration");
-    const year = selectedYear ? selectedYear.value : null;
-    const movieRating = rating;
-    const summary = form.get("summary");
-
     const updatedMovie = {
-      moviePoster,
-      title,
-      genre,
-      duration,
-      year,
-      movieRating,
-      summary,
+      moviePoster: form.get("Photo_URL"),
+      title: form.get("title"),
+      genre: selectedOption.map((opt) => opt.value),
+      duration: form.get("duration"),
+      year: selectedYear?.value || null,
+      movieRating: rating,
+      summary: form.get("summary"),
     };
 
-    // Validate the form
     const validationErrors = validateMovieForm(updatedMovie);
     if (Object.keys(validationErrors).length > 0) {
-      Object.values(validationErrors).forEach((error) =>
+      Object.values(validationErrors).forEach((error) => {
         toast.error(error, {
           position: "bottom-right",
           autoClose: 3000,
@@ -77,31 +65,24 @@ function UpdateMovie() {
           draggable: true,
           progress: undefined,
           theme: "light",
-        })
-      );
+        });
+      });
       return;
     }
 
-    // Send updated data to the backend
     try {
       const response = await fetch(
         `https://animated-movieportal-server.vercel.app/movies/${movie._id}`,
         {
           method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updatedMovie),
         }
       );
 
       if (response.ok) {
         const updatedMovieData = await response.json();
-        Swal.fire({
-          title: "Movie updated successfully!",
-          icon: "success",
-          confirmButtonColor: "Ok",
-        });
+        Swal.fire("Movie updated successfully!", "", "success");
 
         const updatedMovies = allmovies.map((m) =>
           m._id === updatedMovieData._id ? updatedMovieData : m
@@ -110,48 +91,29 @@ function UpdateMovie() {
 
         navigate("/allmovies");
       } else {
-        toast.error("Failed to update the movie", {
-          position: "bottom-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        toast.error("Failed to update the movie");
       }
     } catch (error) {
-      console.error("Error updating movie:", error);
-      toast.error("An error occurred while updating the movie.", {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error("An error occurred while updating the movie.");
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900">
       <ToastContainer />
-      <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg sm:p-8">
+      <div className="w-full max-w-2xl rounded-2xl bg-gray-800 p-6 shadow-lg sm:p-8 text-gray-100">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-blue-800 sm:text-3xl">
+          <h2 className="text-3xl font-extrabold sm:text-4xl text-gradient bg-gradient-to-r from-blue-400 to-purple-600 text-transparent bg-clip-text">
             Update Your Movie
           </h2>
-          <p className="mt-2 text-gray-600">
-            Update the details of your movie.
+          <p className="mt-2 text-gray-300">
+            Modify the details of your movie below.
           </p>
         </div>
-        <form onSubmit={handleUpdateMovie} className="mt-6 space-y-4">
+        <form onSubmit={handleUpdateMovie} className="mt-6 space-y-6">
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium text-blue-900">
+              <span className="label-text font-medium text-gray-300">
                 Movie Poster
               </span>
             </label>
@@ -159,13 +121,14 @@ function UpdateMovie() {
               type="url"
               name="Photo_URL"
               placeholder="Link to your movie poster"
-              className="input input-bordered w-full"
               defaultValue={movie?.moviePoster}
+              className="input input-bordered w-full bg-gray-700 border-gray-600 focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium text-blue-900">
+              <span className="label-text font-medium text-gray-300">
                 Movie Title
               </span>
             </label>
@@ -173,74 +136,90 @@ function UpdateMovie() {
               type="text"
               name="title"
               placeholder="Movie Title"
-              className="input input-bordered w-full"
               defaultValue={movie?.title}
+              className="input input-bordered w-full bg-gray-700 border-gray-600 focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
           <div>
-            <p>Select movie genre</p>
+            <label className="label">
+              <span className="label-text font-medium text-gray-300">
+                Genre
+              </span>
+            </label>
             <Select
               isMulti
               defaultValue={selectedOption}
               onChange={setSelectedOption}
-              options={options}
+              options={genreOptions}
+              className="basic-multi-select text-gray-800"
             />
           </div>
+
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium text-blue-900">
+              <span className="label-text font-medium text-gray-300">
                 Duration
               </span>
             </label>
             <input
               type="number"
               name="duration"
-              placeholder="Movie Duration"
-              className="input input-bordered w-full"
+              placeholder="Duration in minutes"
               defaultValue={movie?.duration}
+              className="input input-bordered w-full bg-gray-700 border-gray-600 focus:ring-2 focus:ring-blue-500"
             />
           </div>
+
           <div className="form-control">
             <label className="label">
-              <span className="label-text font-medium text-blue-900">Year</span>
+              <span className="label-text font-medium text-gray-300">Year</span>
             </label>
             <Select
               options={yearOptions}
               value={selectedYear}
-              onChange={handleChange}
+              onChange={setSelectedYear}
+              className="text-gray-800"
             />
           </div>
-          <div className="form-control flex items-center">
-            <label className="label mr-2">
-              <span className="label-text font-medium text-blue-900">
+
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium text-gray-300">
                 Rating
               </span>
             </label>
-            <Rating
-              onClick={handleRating}
-              initialValue={rating}
-              size={30}
-              maxRating={10}
-            />
-            <p className="ml-2">Your rating: {rating}</p>
+            <div className="flex items-center gap-4">
+              <Rating
+                onClick={handleRating}
+                initialValue={rating}
+                size={30}
+                maxRating={10}
+                fillColor="gold"
+                emptyColor="gray"
+              />
+            </div>
           </div>
-          <div className="form-control flex items-center">
-            <label className="label mr-2">
-              <span className="label-text font-medium text-blue-900">
+
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium text-gray-300">
                 Description
               </span>
             </label>
             <textarea
               name="summary"
               placeholder="Description"
-              className="textarea textarea-bordered textarea-lg w-full max-w-xs"
               defaultValue={movie?.summary}
+              className="textarea textarea-bordered bg-gray-700 border-gray-600 focus:ring-2 focus:ring-blue-500 w-full"
+              rows="4"
             ></textarea>
           </div>
+
           <div className="form-control mt-6">
             <button
               type="submit"
-              className="w-full rounded-lg bg-blue-500 py-2 font-semibold text-white transition hover:bg-blue-600"
+              className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold hover:from-blue-600 hover:to-purple-600 focus:ring-4 focus:ring-blue-400 focus:ring-opacity-50 transition-all duration-300"
             >
               Update Movie
             </button>

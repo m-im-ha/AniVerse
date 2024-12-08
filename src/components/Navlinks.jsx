@@ -105,7 +105,7 @@ function Navlinks() {
                   >
                     LogOut
                   </button>
-                  <NavLink to="/userProfile">
+                  <NavLink>
                     <img
                       className="h-10 w-10 rounded-full border-2 border-yellow-400 hover:border-white"
                       src={user.photoURL}
@@ -219,9 +219,7 @@ function Navlinks() {
                     LogOut
                   </button>
                   <NavLink
-                    to="/userProfile"
                     className="flex items-center gap-2"
-                    onClick={() => setIsMenuOpen(false)}
                   >
                     <img
                       className="h-8 w-8 rounded-full border-2 border-yellow-400 hover:border-white"
