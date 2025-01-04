@@ -1,5 +1,3 @@
-# Programming Hero - B10A10-AniVerse.
-
 # **AniVerse**
 
 **AniVerse** is a web application that allows users to explore, add, update, and manage movies dynamically. The platform is built to deliver a seamless user experience, offering responsive design, secure authentication, and engaging UI/UX features.
