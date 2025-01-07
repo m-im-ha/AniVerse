@@ -1,25 +1,40 @@
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../provider/ThemeProvider";
 
 function Featured({ featuresMovieData }) {
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   function handleSeeDetails(id) {
     navigate(`/movieDetails/${id}`);
   }
 
   return (
-    <div className="bg-base py-10 px-4">
+    <div className={`py-10 px-4 ${
+      theme === 'dark' 
+        ? 'bg-slate-900' 
+        : 'bg-gray-100'
+    }`}>
       <div className="container mx-auto">
         <h1 className="text-center text-3xl md:text-4xl font-extrabold mb-8 font-mont">
-          Featured <span className="text-purple-500">Movies</span>
+          Featured{" "}
+          <span className={
+            theme === 'dark' 
+              ? 'text-purple-400' 
+              : 'text-teal-500'
+          }>Movies</span>
         </h1>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {featuresMovieData.map((movie) => (
             <div
               key={movie._id}
-              className="group bg-slate-800 rounded-xl overflow-hidden shadow-lg 
-              hover:shadow-purple-500/20 transition-all duration-300 border border-slate-700/50"
+              className={`group rounded-xl overflow-hidden shadow-lg 
+              transition-all duration-300 border ${
+                theme === 'dark'
+                  ? 'bg-slate-800 border-slate-700/50 hover:shadow-purple-500/20'
+                  : 'bg-white border-gray-200/50 hover:shadow-teal-500/20'
+              }`}
             >
               {/* Movie Poster */}
               <div className="relative aspect-[16/12] overflow-hidden">
@@ -39,20 +54,29 @@ function Featured({ featuresMovieData }) {
 
               {/* Movie Info */}
               <div className="p-3">
-                <h2 className="text-base font-bold text-white truncate font-mont">
+                <h2 className={`text-base font-bold truncate font-mont ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-800'
+                }`}>
                   {movie.title}
                 </h2>
-                <div className="flex items-center justify-between text-xs text-gray-300 mt-1 mb-2">
-                  <span>{movie.year}</span>
-                  <span className="text-purple-400">{movie.duration} mins</span>
+                <div className="flex items-center justify-between text-sm font-medium mt-1 mb-2">
+                  <span className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
+                    {movie.year}
+                  </span>
+                  <span className={
+                    theme === 'dark' ? 'text-purple-400' : 'text-teal-500'
+                  }>{movie.duration} mins</span>
                 </div>
 
                 <button
                   onClick={() => handleSeeDetails(movie._id)}
-                  className="w-full bg-gradient-to-r from-purple-600 to-purple-800 text-white 
-                  py-1.5 rounded-lg font-semibold text-sm transition-all duration-300 
-                  hover:from-purple-700 hover:to-purple-900 active:scale-95 font-mont
-                  flex items-center justify-center group/btn"
+                  className={`w-full py-1.5 rounded-lg font-semibold text-sm 
+                  transition-all duration-300 active:scale-95 font-mont
+                  flex items-center justify-center group/btn ${
+                    theme === 'dark'
+                      ? 'bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white'
+                      : 'bg-gradient-to-r from-teal-500 to-teal-700 hover:from-teal-600 hover:to-teal-800 text-white'
+                  }`}
                 >
                   See Details
                   <svg

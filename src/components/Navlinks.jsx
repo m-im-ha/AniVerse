@@ -3,13 +3,11 @@ import { MovieContext } from "../provider/Movieprovider";
 import { useContext, useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import Loading from "../ui/Loading";
+import { useTheme } from "../provider/ThemeProvider";
 
 function Navlinks() {
-  const { user, setUser, logOut, loading, setLoading } =
-    useContext(MovieContext);
-  const [theme, setTheme] = useState(
-    () => localStorage.getItem("theme") || "light"
-  );
+  const { user, setUser, logOut, loading, setLoading } = useContext(MovieContext);
+  const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -26,13 +24,6 @@ function Navlinks() {
   useEffect(() => {
     setLoading(false);
   }, [location.pathname, setLoading]);
-
-  const handleToggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-  };
 
   const handleLogout = async () => {
     try {
@@ -137,7 +128,7 @@ function Navlinks() {
                   >
                     Register
                   </NavLink>
-                  <NavLink
+                  {/* <NavLink
                     to="/login"
                     className={`btn btn-sm ${
                       theme === 'dark'
@@ -146,7 +137,7 @@ function Navlinks() {
                     } text-white font-medium tracking-wide`}
                   >
                     Login
-                  </NavLink>
+                  </NavLink> */}
                 </div>
               )}
               <div className="ml-4">
@@ -154,7 +145,7 @@ function Navlinks() {
                   <input
                     type="checkbox"
                     className="toggle toggle-primary"
-                    onChange={handleToggleTheme}
+                    onChange={toggleTheme}
                     checked={theme === "dark"}
                   />
                   <span className="text-sm text-white font-medium">
@@ -177,10 +168,9 @@ function Navlinks() {
             </button>
           </div>
 
-          {/* Mobile Navigation with same theme-based styling */}
+          {/* Mobile Navigation */}
           {isMenuOpen && (
             <nav className="lg:hidden flex flex-col items-start gap-6 pb-6 border-t border-gray-700">
-              {/* Mobile navigation items with same styling as desktop */}
               {[
                 { to: "/", label: "Home" },
                 { to: "/allmovies", label: "All Movies" },
@@ -206,7 +196,74 @@ function Navlinks() {
                   }`}></span>
                 </NavLink>
               ))}
-              {/* Rest of mobile menu with same styling */}
+              
+              {/* User Authentication for Mobile */}
+              {user ? (
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={handleLogout}
+                    className={`btn btn-sm btn-outline ${
+                      theme === 'dark'
+                        ? 'border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-black'
+                        : 'border-teal-400 text-teal-400 hover:bg-teal-400 hover:text-gray-900'
+                    }`}
+                  >
+                    LogOut
+                  </button>
+                  <NavLink>
+                    <img
+                      className={`h-8 w-8 rounded-full border-2 transition-all ${
+                        theme === 'dark'
+                          ? 'border-purple-400 hover:border-white'
+                          : 'border-teal-400 hover:border-white'
+                      }`}
+                      src={user.photoURL}
+                      title={user.displayName || "User"}
+                      alt="User Profile"
+                    />
+                  </NavLink>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2 w-full">
+                  <NavLink
+                    to="/register"
+                    className={`btn btn-sm ${
+                      theme === 'dark'
+                        ? 'bg-purple-500 hover:bg-purple-600'
+                        : 'bg-teal-500 hover:bg-teal-600'
+                    } text-white font-medium tracking-wide`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Register
+                  </NavLink>
+                  <NavLink
+                    to="/login"
+                    className={`btn btn-sm ${
+                      theme === 'dark'
+                        ? 'bg-indigo-600 hover:bg-indigo-700'
+                        : 'bg-slate-600 hover:bg-slate-700'
+                    } text-white font-medium tracking-wide`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Login
+                  </NavLink>
+                </div>
+              )}
+
+              {/* Theme Toggle for Mobile */}
+              <div className="w-full pt-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="toggle toggle-primary"
+                    onChange={toggleTheme}
+                    checked={theme === "dark"}
+                  />
+                  <span className="text-sm text-white font-medium">
+                    {theme === "dark" ? "Dark" : "Light"}
+                  </span>
+                </label>
+              </div>
             </nav>
           )}
         </div>
