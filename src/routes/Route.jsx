@@ -12,6 +12,7 @@ import MovieDetails from "../components/MovieDetails";
 import PrivateRoute from "./PrivateRoute";
 import UpdateMovie from "../page/UpdateMovie";
 import ForgetPass from "../page/ForgetPass";
+import MyProfile from "../components/MyProfile";
 
 export const router = createBrowserRouter([
   {
@@ -33,11 +34,8 @@ export const router = createBrowserRouter([
       },
       {
         path: "/movieDetails/:id",
-        element: (
-          <PrivateRoute>
-            <MovieDetails />
-          </PrivateRoute>
-        ),
+        element: <MovieDetails />,
+
         loader: ({ params }) =>
           fetch(
             `https://animated-movieportal-server.vercel.app/movies/${params.id}`
@@ -68,6 +66,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <UpdateMovie />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/myprofile",
+        element: (
+          <PrivateRoute>
+            <MyProfile />
           </PrivateRoute>
         ),
       },

@@ -7,8 +7,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Swal from "sweetalert2";
 import { MovieContext } from "../provider/Movieprovider";
+import { useTheme } from "../provider/ThemeProvider";
 
 function AddMovie() {
+  const { theme } = useTheme();
   const { user, allmovies, setAllmovies } = useContext(MovieContext);
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
@@ -19,16 +21,12 @@ function AddMovie() {
     setRating(newRating);
   }
 
-  const years = Array.from(
-    { length: 30 },
-    (_, i) => new Date().getFullYear() - i
-  );
-  const yearOptions = years.map((year) => ({ value: year, label: year }));
-
   const handleChange = (selectedOption) => {
     setSelectedYear(selectedOption);
   };
 
+   const years = Array.from({ length: 30 }, (_, i) => new Date().getFullYear() - i);
+  const yearOptions = years.map((year) => ({ value: year, label: year }));
   const options = [
     { value: "Action", label: "Action" },
     { value: "Horror", label: "Horror" },
@@ -39,6 +37,39 @@ function AddMovie() {
     { value: "Romance", label: "Romance" },
     { value: "Thriller", label: "Thriller" },
   ];
+
+  const customSelectStyles = {
+    control: (styles) => ({
+      ...styles,
+      backgroundColor: theme === 'dark' ? '#1e293b' : 'white',
+      borderColor: theme === 'dark' ? '#3f445180' : '#e2e8f0',
+      '&:hover': {
+        borderColor: theme === 'dark' ? '#6b21a8' : '#14b8a6'
+      }
+    }),
+    option: (styles, { isFocused }) => ({
+      ...styles,
+      backgroundColor: isFocused 
+        ? theme === 'dark' ? '#3f445180' : '#e2e8f0' 
+        : theme === 'dark' ? '#1e293b' : 'white',
+      color: theme === 'dark' ? '#e2e8f0' : '#1e293b',
+      ':active': {
+        backgroundColor: theme === 'dark' ? '#6b21a8' : '#14b8a6'
+      }
+    }),
+    menu: (styles) => ({
+      ...styles,
+      backgroundColor: theme === 'dark' ? '#1e293b' : 'white'
+    }),
+    multiValue: (styles) => ({
+      ...styles,
+      backgroundColor: theme === 'dark' ? '#3f445180' : '#e2e8f0'
+    }),
+    multiValueLabel: (styles) => ({
+      ...styles,
+      color: theme === 'dark' ? '#e2e8f0' : '#1e293b'
+    })
+  };
 
   async function handleAddMovie(e) {
     e.preventDefault();
@@ -132,125 +163,182 @@ function AddMovie() {
   
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4 py-10 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900">
+    <div className={`min-h-screen py-16 px-4 ${
+      theme === 'dark'
+        ? 'bg-gradient-to-br from-black via-slate-900 to-black'
+        : 'bg-gradient-to-br from-slate-100 via-white to-slate-100'
+    }`}>
       <ToastContainer />
-      <div className="w-full max-w-2xl rounded-2xl bg-gray-800 p-6 shadow-lg sm:p-8 text-gray-100">
-        <div className="text-center">
-          <h2 className="text-3xl font-extrabold sm:text-4xl text-gradient bg-gradient-to-r from-blue-400 to-purple-600 text-transparent bg-clip-text">
-            Add Your Movie
-          </h2>
-          <p className="mt-2 text-gray-300">
-            Enter your movie details below to share it.
-          </p>
-        </div>
-        <form onSubmit={handleAddMovie} className="mt-6 space-y-6">
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium text-gray-300">
-                Movie Poster
-              </span>
-            </label>
-            <input
-              type="url"
-              name="Photo_URL"
-              placeholder="Link to your movie poster"
-              className="input input-bordered w-full bg-gray-700 border-gray-600 focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium text-gray-300">
-                Movie Title
-              </span>
-            </label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Movie Title"
-              className="input input-bordered w-full bg-gray-700 border-gray-600 focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          <div>
-            <label className="label">
-              <span className="label-text font-medium text-gray-300">
-                Genre
-              </span>
-            </label>
-            <Select
-              isMulti
-              defaultValue={selectedOption}
-              onChange={setSelectedOption}
-              options={options}
-              className="basic-multi-select text-gray-800"
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium text-gray-300">
-                Duration
-              </span>
-            </label>
-            <input
-              type="number"
-              name="duration"
-              placeholder="Duration in minutes"
-              className="input input-bordered w-full bg-gray-700 border-gray-600 focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium text-gray-300">Year</span>
-            </label>
-            <Select
-              options={yearOptions}
-              value={selectedYear}
-              onChange={handleChange}
-              className="text-gray-800"
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium text-gray-300">
-                Rating
-              </span>
-            </label>
-            <div className="flex items-center gap-4">
-              <Rating
-                onClick={handleRating}
-                ratingValue={rating}
-                size={30}
-                maxRating={10}
-                fillColor="gold"
-                emptyColor="gray"
-              />
+      
+      <div className="container mx-auto max-w-4xl">
+        <div className={`rounded-2xl overflow-hidden shadow-xl ${
+          theme === 'dark'
+            ? 'bg-slate-800/50 backdrop-blur-sm border border-slate-700/50'
+            : 'bg-white/80 backdrop-blur-sm border border-slate-200/50'
+        }`}>
+          <div className="p-8">
+            <div className="text-center mb-8">
+              <h2 className={`text-3xl font-extrabold font-mont mb-3 ${
+                theme === 'dark' ? 'text-white' : 'text-gray-800'
+              }`}>
+                Add New <span className={theme === 'dark' ? 'text-purple-400' : 'text-teal-500'}>Movie</span>
+              </h2>
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} font-mont`}>
+                Share your favorite animated movies with others
+              </p>
             </div>
+
+            <form onSubmit={handleAddMovie} className="space-y-6">
+              {/* Two-Column Grid */}
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Movie Poster */}
+                <div className="form-control">
+                  <label className={`block mb-2 font-medium font-mont ${
+                    theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                  }`}>
+                    Movie Poster URL
+                  </label>
+                  <input
+                    type="url"
+                    name="Photo_URL"
+                    placeholder="Enter poster URL"
+                    className={`w-full px-4 py-3 rounded-xl font-mont transition-all duration-300 ${
+                      theme === 'dark'
+                        ? 'bg-slate-900/50 border border-slate-700 text-white placeholder-gray-400 focus:border-purple-500'
+                        : 'bg-white border border-slate-200 text-gray-900 placeholder-gray-500 focus:border-teal-500'
+                    }`}
+                    required
+                  />
+                </div>
+
+                {/* Movie Title */}
+                <div className="form-control">
+                  <label className={`block mb-2 font-medium font-mont ${
+                    theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                  }`}>
+                    Movie Title
+                  </label>
+                  <input
+                    type="text"
+                    name="title"
+                    placeholder="Enter movie title"
+                    className={`w-full px-4 py-3 rounded-xl font-mont transition-all duration-300 ${
+                      theme === 'dark'
+                        ? 'bg-slate-900/50 border border-slate-700 text-white placeholder-gray-400 focus:border-purple-500'
+                        : 'bg-white border border-slate-200 text-gray-900 placeholder-gray-500 focus:border-teal-500'
+                    }`}
+                    required
+                  />
+                </div>
+
+                {/* Genre Select */}
+                <div className="form-control">
+                  <label className={`block mb-2 font-medium font-mont ${
+                    theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                  }`}>
+                    Genre
+                  </label>
+                  <Select
+                    isMulti
+                    defaultValue={selectedOption}
+                    onChange={setSelectedOption}
+                    options={options}
+                    styles={customSelectStyles}
+                    className="font-mont"
+                  />
+                </div>
+
+                {/* Duration */}
+                <div className="form-control">
+                  <label className={`block mb-2 font-medium font-mont ${
+                    theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                  }`}>
+                    Duration (minutes)
+                  </label>
+                  <input
+                    type="number"
+                    name="duration"
+                    placeholder="Enter duration"
+                    className={`w-full px-4 py-3 rounded-xl font-mont transition-all duration-300 ${
+                      theme === 'dark'
+                        ? 'bg-slate-900/50 border border-slate-700 text-white placeholder-gray-400 focus:border-purple-500'
+                        : 'bg-white border border-slate-200 text-gray-900 placeholder-gray-500 focus:border-teal-500'
+                    }`}
+                    required
+                  />
+                </div>
+
+                {/* Year Select */}
+                <div className="form-control">
+                  <label className={`block mb-2 font-medium font-mont ${
+                    theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                  }`}>
+                    Release Year
+                  </label>
+                  <Select
+                    options={yearOptions}
+                    value={selectedYear}
+                    onChange={handleChange}
+                    styles={customSelectStyles}
+                    className="font-mont"
+                  />
+                </div>
+
+                {/* Rating */}
+                <div className="form-control">
+                  <label className={`block mb-2 font-medium font-mont ${
+                    theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                  }`}>
+                    Rating
+                  </label>
+                  <div className="flex items-center h-[42px]">
+                    <Rating
+                      onClick={handleRating}
+                      ratingValue={rating}
+                      size={25}
+                      maxRating={5}
+                      fillColor={theme === 'dark' ? '#c084fc' : '#14b8a6'}
+                      emptyColor={theme === 'dark' ? '#334155' : '#e2e8f0'}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Full-width Description */}
+              <div className="form-control">
+                <label className={`block mb-2 font-medium font-mont ${
+                  theme === 'dark' ? 'text-gray-200' : 'text-gray-700'
+                }`}>
+                  Movie Description
+                </label>
+                <textarea
+                  name="summary"
+                  placeholder="Enter movie description"
+                  rows="4"
+                  className={`w-full px-4 py-3 rounded-xl font-mont transition-all duration-300 ${
+                    theme === 'dark'
+                      ? 'bg-slate-900/50 border border-slate-700 text-white placeholder-gray-400 focus:border-purple-500'
+                      : 'bg-white border border-slate-200 text-gray-900 placeholder-gray-500 focus:border-teal-500'
+                  }`}
+                  required
+                />
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className={`w-full py-3 rounded-xl font-mont text-white font-semibold
+                transition-all duration-300 transform hover:scale-[1.02] active:scale-98 ${
+                  theme === 'dark'
+                    ? 'bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900'
+                    : 'bg-gradient-to-r from-teal-500 to-teal-700 hover:from-teal-600 hover:to-teal-800'
+                }`}
+              >
+                Add Movie
+              </button>
+            </form>
           </div>
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text font-medium text-gray-300">
-                Description
-              </span>
-            </label>
-            <textarea
-              name="summary"
-              placeholder="Description"
-              className="textarea textarea-bordered bg-gray-700 border-gray-600 focus:ring-2 focus:ring-blue-500 w-full"
-              rows="4"
-              required
-            ></textarea>
-          </div>
-          <div className="form-control mt-6">
-            <button
-              type="submit"
-              className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold hover:from-blue-600 hover:to-purple-600 focus:ring-4 focus:ring-blue-400 focus:ring-opacity-50 transition-all duration-300"
-            >
-              Add Movie
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   );
