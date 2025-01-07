@@ -6,32 +6,37 @@ import { useTheme } from "../provider/ThemeProvider";
 
 function Favoritemovies() {
   const { theme } = useTheme();
-  const { user, loading, setLoading } = useContext(MovieContext);
+  const { user } = useContext(MovieContext);
   const [favorites, setFavorites] = useState([]);
-  // console.log(favorites);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchFavorites = async () => {
-      setLoading(true);
       try {
         const response = await fetch(
           `https://animated-movieportal-server.vercel.app/favorites/${user.userID}`
         );
         if (response.ok) {
           const data = await response.json();
-          setFavorites(data);
+          setFavorites(Array.isArray(data) ? data : []);
         } else {
           console.error("Failed to fetch favorites");
+          setFavorites([]);
         }
       } catch (error) {
         console.error("Error fetching favorites:", error);
+        setFavorites([]);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
-    if (user) fetchFavorites();
-  }, [user, setLoading]);
+    if (user?.userID) {
+      fetchFavorites();
+    } else {
+      setIsLoading(false);
+    }
+  }, [user,setIsLoading]);
 
   function handleDeleteFavorite(movieId) {
     Swal.fire({
@@ -45,7 +50,7 @@ function Favoritemovies() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          setLoading(true);
+          setIsLoading(true);
           const response = await fetch(
             `https://animated-movieportal-server.vercel.app/favorites/${user.userID}/${movieId}`,
             {
@@ -65,13 +70,13 @@ function Favoritemovies() {
         } catch (error) {
           console.error("Error deleting movie:", error);
         } finally {
-          setLoading(false);
+          setIsLoading(false);
         }
       }
     });
   }
 
-  if (loading) return <Loading />;
+  if (isLoading) return <Loading />;
 
   return (
     <div className={`mt-8 min-h-screen py-10 px-4 ${

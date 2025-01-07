@@ -15,8 +15,9 @@ export const MovieContext = createContext();
 const googleProvider = new GoogleAuthProvider();
 
 function Movieprovider({ children }) {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [initialAuthCheck, setInitialAuthCheck] = useState(true);
   const [allmovies, setAllmovies] = useState([]);
   // console.log(`user from provider: `, user);
 
@@ -30,6 +31,11 @@ function Movieprovider({ children }) {
     return signInWithEmailAndPassword(auth, email, password);
   }
 
+  function signInWithGoogle() {
+    setLoading(true);
+    return signInWithPopup(auth, googleProvider);
+  }
+  
   function logOut() {
     return signOut(auth);
   }
@@ -38,9 +44,6 @@ function Movieprovider({ children }) {
     return updateProfile(auth.currentUser, data);
   }
 
-  function signInWithGoogle() {
-    return signInWithPopup(auth, googleProvider);
-  }
 
   function passReset(email) {
     return sendPasswordResetEmail(auth, email);
@@ -48,36 +51,39 @@ function Movieprovider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setLoading(true);
-      if (currentUser) {
-        // User is logged in
-        const email = currentUser.email;
-
-        try {
+      try {
+        if (currentUser) {
+          // User is logged in
+          const email = currentUser.email;
           // Fetch user data from the backend
           const response = await fetch(
             `https://animated-movieportal-server.vercel.app/users?email=${email}`
           );
           const backendUser = await response.json();
-
           // Update the context with both Firebase user data and userID from backend
           setUser({
             ...currentUser,
             userID: backendUser._id,
           });
-        } catch (error) {
-          console.error("Error fetching user data:", error);
+        } else {
+          // User is not logged in
           setUser(null);
         }
-      } else {
-        // User is not logged in
+      } catch (error) {
+        console.error("Error fetching user data:", error);
         setUser(null);
+      } finally {
+        setLoading(false);
+        setInitialAuthCheck(false);
       }
-      setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
+
+  if (initialAuthCheck) {
+    // console.log("Waiting for Firebase auth check...");
+    return null;
+  }
 
   return (
     <MovieContext.Provider
