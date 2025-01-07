@@ -61,7 +61,7 @@ function Navlinks() {
           ? 'bg-gradient-to-r from-black via-purple-950 to-black' 
           : 'bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800'
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-5">
           <div className="flex justify-between items-center py-2">
             <div className="text-3xl font-extrabold tracking-wide">
               <NavLink
